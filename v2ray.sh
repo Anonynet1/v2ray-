@@ -76,21 +76,22 @@ echo -e "\033[1;37mEXECUTANDO SCRIPT ACME\033[0m"
 echo -e ""
 curl https://get.acme.sh | sh
 echo -e ""
+sleep 1
+clear
 echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m
-wget -O x-ui-pt-main https://www.dropbox.com/s/aqgh2f769l7rlee/x-ui-pt-main.zip?dl=0 -o /dev/null
+rm install.sh* > /dev/null 2>&1 
+wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh && chmod 777 v2ray.sh && ./install.sh
 sleep 1
-wget https://www.dropbox.com/s/vp7iozqa50qyrr4/install.sh && bash install.sh
-sleep 1
-rm install.sh
+clear
 echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m
-wget -o /dev/null -O- https://www.dropbox.com/s/b5p26hxf32wmcoj/tcp -O /bin/tcp
-chmod +x /bin/tcp
+rm tcp.sh* > /dev/null 2>&1 
+wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh > /dev/null 2>&1
+> /dev/null 2>&1
 sleep 1
 echo -e "\033[1;37mINICIANDO.....\033[1;31m \033[0m
-rm -rf /bin/menu 2>/dev/null
-sleep 1
-wget -o /dev/null -O- https://www.dropbox.com/s/eh0r6igt40emuut/menu -O /bin/menu
-chmod +x /bin/menu
+rm menu* > /dev/null 2>&1 
+wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/menu > /dev/null 2>&1
+> /dev/null 2>&1
 sleep 1
 clear
 echo "clear" >> .bash_profile
