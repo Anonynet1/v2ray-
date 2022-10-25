@@ -35,7 +35,7 @@ echo -e "\033[1;37m                                  @                          
 echo -e "\033[1;37m                                                                      \033[0m"  
 echo -e "\033[1;33m======================================================================\033[0m"
 echo ""
-rm v2ray.sh
+rm v2ray.sh* > /dev/null 2>&1 
 echo -e "\033[01;37m       BY: @AnonyNet1991                
        Marcos SSH                 
        Nome: .... V2RAY 2.0.... \033[0m"
