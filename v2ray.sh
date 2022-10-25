@@ -51,15 +51,15 @@ echo -e "\033[0;35m-[ 00% ]\033[0m"
 apt-get update -y 1> /dev/null 2> /dev/stdout
 echo -e "\033[0;35m--------------[ 10% ]\033[0m"
 apt-get install figlet -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m---------------------------------[ 30% ]\033[0m"
+echo -e "\033[0;35m-------------------------[ 30% ]\033[0m"
 apt-get install htop -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m--------------------------------------------------[ 50% ]\033[0m"
+echo -e "\033[0;35m--------------------------------------------[ 50% ]\033[0m"
 apt-get install unzip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-----------------------------------------------------------------[ 60% ]\033[0m"
+echo -e "\033[0;35m---------------------------------------------------------------[ 60% ]\033[0m"
 apt-get install zip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-------------------------------------------------------------------------------------------------[ 80% ]\033[0m"
+echo -e "\033[0;35m-------------------------------------------------------------------------[ 80% ]\033[0m"
 apt install -y curl && apt install -y socat 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m----------------------------------------------------------------------------------------------------------------[ 100% ]\033[0m"
+echo -e "\033[0;35m-----------------------------------------------------------------------------------[ 100% ]\033[0m"
 clear
 echo -e ""
 echo -e "\033[1;37mV2RAY 2.0 ESSE SCRIPT FUNCIONA COMO O GERENCIADOR V2RAY WEB ...\033[0m"
@@ -79,19 +79,18 @@ echo -e ""
 sleep 1
 clear
 echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m
-rm install.sh* > /dev/null 2>&1 
-wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh && chmod 777 v2ray.sh && ./install.sh
+wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh && bash install.sh
 sleep 1
+rm install.sh
 clear
 echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m
-rm tcp.sh* > /dev/null 2>&1 
-wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh > /dev/null 2>&1
-> /dev/null 2>&1
+wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh && bash tcp.sh
+rm tcp.sh
 sleep 1
-echo -e "\033[1;37mINICIANDO.....\033[1;31m \033[0m
-rm menu* > /dev/null 2>&1 
-wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/menu > /dev/null 2>&1
-> /dev/null 2>&1
+echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m
+sleep 1
+wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/menu -O /bin/menu
+chmod +x /bin/menu
 sleep 1
 clear
 echo "clear" >> .bash_profile
