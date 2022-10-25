@@ -35,7 +35,7 @@ echo -e "\033[1;37m                                  @                          
 echo -e "\033[1;37m                                                                      \033[0m"  
 echo -e "\033[1;33m======================================================================\033[0m"
 echo ""
-rm v2ray.sh
+rm v2ray.sh* > /dev/null 2>&1 
 echo -e "\033[01;37m       BY: @AnonyNet1991                
        Marcos SSH                 
        Nome: .... V2RAY 2.0.... \033[0m"
@@ -75,21 +75,17 @@ echo -e ""
 echo -e "\033[1;37mEXECUTANDO SCRIPT ACME\033[0m"
 echo -e ""
 curl https://get.acme.sh | sh
-echo -e ""
-echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m
-wget -O x-ui-pt-main https://www.dropbox.com/s/aqgh2f769l7rlee/x-ui-pt-main.zip?dl=0 -o /dev/null
+echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m"
+bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
 sleep 1
-wget https://www.dropbox.com/s/vp7iozqa50qyrr4/install.sh && bash install.sh
-sleep 1
-rm install.sh
-echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m
-wget -o /dev/null -O- https://www.dropbox.com/s/b5p26hxf32wmcoj/tcp -O /bin/tcp
+clear
+echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m"
+wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh -O /bin/tcp
 chmod +x /bin/tcp
 sleep 1
-echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m
-rm -rf /bin/menu 2>/dev/null
+echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m"
 sleep 1
-wget -o /dev/null -O- https://www.dropbox.com/s/eh0r6igt40emuut/menu -O /bin/menu
+wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/menu -O /bin/menu
 chmod +x /bin/menu
 sleep 1
 clear
@@ -97,9 +93,8 @@ echo "clear" >> .bash_profile
 echo "menu" >> .bash_profile
 sleep 1
 clear
-echo -e "\033[1;37mLIMPANDO CACHE.....\033[1;31m \033[0m
-apt update -y && apt upgrade -y && apt autoremove -y && apt -f install -y && apt autoclean -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[1;37mSUA VPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m
+apt update -y && apt upgrade -y && apt autoremove -y && apt -f install -y && apt autoclean -y 
+echo -e "\033[1;37mVPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m"
 echo -e ""
 echo -e "\033[0;35m-[5]\033[0m"
 sleep 1
