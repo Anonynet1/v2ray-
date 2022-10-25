@@ -85,7 +85,7 @@ config_after_install() {
     read -p "Por favor, defina o nome da sua conta:" config_account
     echo -e "${yellow}O login da sua conta será definido como:${config_account}${plain}"
     read -p "Por favor, defina a senha da sua conta:" config_password
-    echo -e "${yellow}A senha da sua conta será definida como为:${config_password}${plain}"
+    echo -e "${yellow}A senha da sua conta será definida como:${config_password}${plain}"
     read -p "Por favor, defina o acesso ao painel:" config_port
     echo -e "${yellow}Sua porta de acesso ao painel será configurada para:${config_port}${plain}"
     read -p "Confirme se a configuração está concluída？[y/n]": config_confirm
