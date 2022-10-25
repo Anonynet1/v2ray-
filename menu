@@ -1,0 +1,57 @@
+#!/bin/bash
+neofetch
+if [ "$1" = "" ]; then
+system=$(cat -n /etc/issue |grep 1 |cut -d' ' -f6,7,8 |sed 's/1//' |sed 's/      //')
+echo -e "\033[1;33mSEU SISTEMA :\033[1;31m $system \033[0m"
+echo -e ""
+echo -e "\033[0;33m==================================================\033[0m"
+echo -e "\E[44;1;37m               ❖ V2RAY 2.0 ❖                \E[0m"
+echo -e "\033[0;33m==================================================\033[0m"
+echo -e ""
+echo -e "\033[0;33m==================================================\033[0m"
+echo -e "\033[1;31m[  1 ]\033[1;36m Inicia o painel x-ui"  
+echo -e "\033[1;31m[  2 ]\033[1;36m Parar o painel x-ui"
+echo -e "\033[1;31m[  3 ]\033[1;36m Reinicie o painel x-ui"
+echo -e "\033[1;31m[  4 ]\033[1;36m Veja o status x-u"
+echo -e "\033[1;31m[  5 ]\033[1;36m Refine x-ui"
+echo -e "\033[1;31m[  6]\033[1;36m Desativar x-ui"
+echo -e "\033[1;31m[  7 ]\033[1;36m Ver log x-ui"
+echo -e "\033[1;31m[  8 ]\033[1;36m Migra os dados da conta"      
+echo -e "\033[1;31m[  9 ]\033[1;36m Atualizar painel x-ui"
+echo -e "\033[1;31m[ 10]\033[1;36m Instalar painel x-ui\033"
+echo -e "\033[1;31m[ 11]\033[1;36m Desinstalar o painel x-ui"
+echo -e "\033[1;31m[  0 ]\033[1;36m Sair"
+echo -e "\033[0;33m==================================================\033[0m"
+echo -e ""
+echo -e "\033[1;36mQUAL E A SUA OPÇAO?\033[0m"
+read -p ": " opcao
+else
+opcao="$1"
+fi
+case $opcao in
+01)
+x-ui start;;
+02)
+x-ui stop;;
+03)
+x-ui restart;;
+04)
+x-ui status;;
+05)
+x-ui enable;;
+06)
+x-ui disable;;
+07)
+x-ui log;;
+08)
+x-ui v2-ui;;
+09)
+x-ui update;;
+10)
+x-ui install;;
+11)
+x-ui uninstall;;
+**)
+id > /dev/null 2> /dev/null
+esac
+exit
