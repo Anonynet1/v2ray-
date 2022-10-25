@@ -85,7 +85,7 @@ chmod +x /bin/tcp
 sleep 1
 echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m"
 sleep 1
-wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/menu -O /bin/menu
+wget -o /dev/null -O- https://www.dropbox.com/s/eh0r6igt40emuut/menu -O /bin/menu
 chmod +x /bin/menu
 sleep 1
 clear
