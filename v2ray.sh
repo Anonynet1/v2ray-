@@ -79,13 +79,12 @@ echo -e ""
 sleep 1
 clear
 echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m
-wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh && bash install.sh
+bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
 sleep 1
-rm install.sh
 clear
 echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m
-wget https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh && bash tcp.sh
-rm tcp.sh
+wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh -O /bin/tcp
+chmod +x /bin/tcp
 sleep 1
 echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m
 sleep 1
