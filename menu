@@ -75,18 +75,20 @@ echo -e "\033[1;37mSISTEMA            MEMÓRIA RAM      PROCESSADOR "
 echo -e "\033[1;38mOS: \033[1;37m$_system \033[1;37mTotal:\033[1;37m$_ram \033[1;37mNucleos: \033[1;37m$_core\033[0m"
 echo -e "\033[1;37mHora: \033[1;37m$_hora     \033[1;37mEm uso: \033[1;37m$_usor \033[1;37mEm uso: \033[1;37m$_usop\033[0m"
 echo -e "\033[0;33m==================================================\033[0m"
-echo -e "\033[1;36m[01]\033[1;37m Inicia o painel x-ui"  
-echo -e "\033[1;36m[02]\033[1;37m Parar o painel x-ui"
-echo -e "\033[1;36m[03]\033[1;37m Reinicie o painel x-ui"
-echo -e "\033[1;36m[04]\033[1;37m Veja o status x-u"
-echo -e "\033[1;36m[05]\033[1;37m Refine x-ui"
-echo -e "\033[1;36m[06]\033[1;37m Desativar x-ui"
-echo -e "\033[1;36m[07]\033[1;37m Ver log x-ui"
-echo -e "\033[1;36m[08]\033[1;37m Migra os dados da conta"      
-echo -e "\033[1;36m[09]\033[1;37m Atualizar painel x-ui"
-echo -e "\033[1;36m[10]\033[1;37m Instalar painel x-ui\033"
-echo -e "\033[1;36m[11]\033[1;37m Desinstalar o painel x-ui"
-echo -e "\033[1;36m[12]\033[1;37m TCP BBR/BBR PLUS "
+echo -e ""
+echo -e "\033[1;31m[01]\033[1;37m Inicia o painel x-ui"  
+echo -e "\033[1;31m[02]\033[1;37m Parar o painel x-ui"
+echo -e "\033[1;31m[03]\033[1;37m Reinicie o painel x-ui"
+echo -e "\033[1;31m[04]\033[1;37m Veja o status x-u"
+echo -e "\033[1;31m[05]\033[1;37m Refine x-ui"
+echo -e "\033[1;31m[06]\033[1;37m Desativar x-ui"
+echo -e "\033[1;31m[07]\033[1;37m Ver log x-ui"
+echo -e "\033[1;31m[08]\033[1;37m Migra os dados da conta"      
+echo -e "\033[1;31m[09]\033[1;37m Atualizar painel x-ui"
+echo -e "\033[1;31m[10]\033[1;37m Instalar painel x-ui\033"
+echo -e "\033[1;31m[11]\033[1;37m Desinstalar o painel x-ui"
+echo -e "\033[1;31m[00]\033[1;37m Sair"
+echo -e ""
 echo -e "\033[0;33m==================================================\033[0m"
 echo -e ""
 read -p ": " opcao
@@ -116,8 +118,6 @@ x-ui update;;
 x-ui install;;
 11)
 x-ui uninstall;;
-12)
-tcp;;
 **)
 esac
-menu
+exit
