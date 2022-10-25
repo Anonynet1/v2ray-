@@ -1,29 +1,94 @@
 #!/bin/bash
-neofetch
 if [ "$1" = "" ]; then
-system=$(cat -n /etc/issue |grep 1 |cut -d' ' -f6,7,8 |sed 's/1//' |sed 's/      //')
-echo -e "\033[1;33mSEU SISTEMA :\033[1;31m $system \033[0m"
-echo -e ""
 echo -e "\033[0;33m==================================================\033[0m"
 echo -e "\E[44;1;37m               ❖ V2RAY 2.0 ❖                \E[0m"
 echo -e "\033[0;33m==================================================\033[0m"
-echo -e ""
+mine_port () {
+unset portas
+portas_var=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
+i=0
+while read port; do
+var1=$(echo $port | awk '{print $1}') && var2=$(echo $port | awk '{print $9}' | awk -F ":" '{print $2}')
+[[ "$(echo -e ${portas[@]}|grep "$var1 $var2")" ]] || {
+    portas[$i]="$var1 $var2"
+    let i++
+    }
+done <<< "$portas_var"
+for((i=0; i<=${#portas[@]}; i++)); do
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && break
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -ne "${texto}"
+let i++
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && {
+   echo -e " "
+   break
+   }
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -ne "${texto}"
+let i++
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && {
+   echo -e " "
+   break
+   }
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -e "${texto}"
+done
 echo -e "\033[0;33m==================================================\033[0m"
-echo -e "\033[1;31m[  1 ]\033[1;36m Inicia o painel x-ui"  
-echo -e "\033[1;31m[  2 ]\033[1;36m Parar o painel x-ui"
-echo -e "\033[1;31m[  3 ]\033[1;36m Reinicie o painel x-ui"
-echo -e "\033[1;31m[  4 ]\033[1;36m Veja o status x-u"
-echo -e "\033[1;31m[  5 ]\033[1;36m Refine x-ui"
-echo -e "\033[1;31m[  6]\033[1;36m Desativar x-ui"
-echo -e "\033[1;31m[  7 ]\033[1;36m Ver log x-ui"
-echo -e "\033[1;31m[  8 ]\033[1;36m Migra os dados da conta"      
-echo -e "\033[1;31m[  9 ]\033[1;36m Atualizar painel x-ui"
-echo -e "\033[1;31m[ 10]\033[1;36m Instalar painel x-ui\033"
-echo -e "\033[1;31m[ 11]\033[1;36m Desinstalar o painel x-ui"
-echo -e "\033[1;31m[  0 ]\033[1;36m Sair"
+}
+mine_port
+
+if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
+system=$(cut -d' ' -f1 /etc/issue.net)
+system+=$(echo ' ')
+system+=$(cut -d' ' -f2 /etc/issue.net |awk -F "." '{print $1}')
+elif [[ "$(grep -c "Debian" /etc/issue.net)" = "1" ]]; then
+system=$(cut -d' ' -f1 /etc/issue.net)
+system+=$(echo ' ')
+system+=$(cut -d' ' -f3 /etc/issue.net)
+else
+system=$(cut -d' ' -f1 /etc/issue.net)
+fi
+_ons=$(ps -x | grep sshd | grep -v root | grep priv | wc -l)
+_ram=$(printf ' %-9s' "$(free -h | grep -i mem | awk {'print $2'})")
+_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
+_usop=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
+_core=$(printf '%-1s' "$(grep -c cpu[0-9] /proc/stat)")
+_system=$(printf '%-14s' "$system")
+_hora=$(printf '%(%H:%M:%S)T')
+_tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
+echo -e "\033[1;37mSISTEMA            MEMÓRIA RAM      PROCESSADOR "
+echo -e "\033[1;38mOS: \033[1;37m$_system \033[1;37mTotal:\033[1;37m$_ram \033[1;37mNucleos: \033[1;37m$_core\033[0m"
+echo -e "\033[1;37mHora: \033[1;37m$_hora     \033[1;37mEm uso: \033[1;37m$_usor \033[1;37mEm uso: \033[1;37m$_usop\033[0m"
+echo -e "\033[0;33m==================================================\033[0m"
+echo -e "\033[1;36m[01]\033[1;37m Inicia o painel x-ui"  
+echo -e "\033[1;36m[02]\033[1;37m Parar o painel x-ui"
+echo -e "\033[1;36m[03]\033[1;37m Reinicie o painel x-ui"
+echo -e "\033[1;36m[04]\033[1;37m Veja o status x-u"
+echo -e "\033[1;36m[05]\033[1;37m Refine x-ui"
+echo -e "\033[1;36m[06]\033[1;37m Desativar x-ui"
+echo -e "\033[1;36m[07]\033[1;37m Ver log x-ui"
+echo -e "\033[1;36m[08]\033[1;37m Migra os dados da conta"      
+echo -e "\033[1;36m[09]\033[1;37m Atualizar painel x-ui"
+echo -e "\033[1;36m[10]\033[1;37m Instalar painel x-ui\033"
+echo -e "\033[1;36m[11]\033[1;37m Desinstalar o painel x-ui"
+echo -e "\033[1;36m[12]\033[1;37m TCP BBR/BBR PLUS "
 echo -e "\033[0;33m==================================================\033[0m"
 echo -e ""
-echo -e "\033[1;36mQUAL E A SUA OPÇAO?\033[0m"
 read -p ": " opcao
 else
 opcao="$1"
@@ -51,7 +116,8 @@ x-ui update;;
 x-ui install;;
 11)
 x-ui uninstall;;
+12)
+tcp;;
 **)
-id > /dev/null 2> /dev/null
 esac
-exit
+menu
