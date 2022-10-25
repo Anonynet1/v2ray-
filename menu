@@ -84,8 +84,9 @@ echo -e "\033[1;36m[06]\033[1;37m Desativar x-ui"
 echo -e "\033[1;36m[07]\033[1;37m Ver log x-ui"
 echo -e "\033[1;36m[08]\033[1;37m Migra os dados da conta"      
 echo -e "\033[1;36m[09]\033[1;37m Atualizar painel x-ui"
-echo -e "\033[1;36m[10]\033[1;37m Instalar painel x-ui\033"
+echo -e "\033[1;36m[10]\033[1;37m Instalar painel x-ui"
 echo -e "\033[1;36m[11]\033[1;37m Desinstalar o painel x-ui"
+echo -e "\033[1;36m[12]\033[1;37m Tcp bbr / bbr plus"
 echo -e "\033[0;33m==================================================\033[0m"
 echo -e ""
 read -p ": " opcao
@@ -115,6 +116,8 @@ x-ui update;;
 x-ui install;;
 11)
 x-ui uninstall;;
+12)
+tcp;;
 **)
 esac
 menu
