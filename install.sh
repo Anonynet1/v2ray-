@@ -1,109 +1,152 @@
 #!/bin/bash
-##Anonynet
-##By: @AnonyNet1991
-# ATUALIZAÇÃO #
-cd
-if [ $(id -u) != 0 ]
-then
-echo "Execute o script como root"
-exit
+
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+plain='\033[0m'
+
+cur_dir=$(pwd)
+
+# check root
+[[ $EUID -ne 0 ]] && echo -e "${red}erro：${plain}Execute este script como usuário root\n" && exit 1
+
+# check os
+if [[ -f /etc/redhat-release ]]; then
+    release="centos"
+elif cat /etc/issue | grep -Eqi "debian"; then
+    release="debian"
+elif cat /etc/issue | grep -Eqi "ubuntu"; then
+    release="ubuntu"
+elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
+    release="centos"
+elif cat /proc/version | grep -Eqi "debian"; then
+    release="debian"
+elif cat /proc/version | grep -Eqi "ubuntu"; then
+    release="ubuntu"
+elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
+    release="centos"
+else
+    echo -e "${red}Versão do sistema não detectada，Entre em contato com o autor do script！${plain}\n" && exit 1
 fi
-clear
-echo -e "\033[1;33m======================================================================\033[0m"
-echo -e "\033[1;37m                           .                                          \033[0m"
-echo -e "\033[1;37m                      .XG@B@@1                                        \033[0m"  
-echo -e "\033[1;37m                      @B@@@B@                                         \033[0m"
-echo -e "\033[1;37m                      B@B@B@M          ,,::i.                         \033[0m"
-echo -e "\033[1;37m                      @B@BOO@qi       iLPSF5X:                        \033[0m"
-echo -e "\033[1;37m                      B@Bri2B@B@:    PB@Bkri7v,                       \033[0m"    
-echo -e "\033[1;37m                      @B@     7@Z   :BN                               \033[0m"
-echo -e "\033[1;37m                      B@B@ii:  :B0  .7 .i77i.P:                       \033[0m"
-echo -e "\033[1;37m                      @B:7GB@M7B@@,    k@B@XrBS                       \033[0m"
-echo -e "\033[1;37m                      B0       @B@r                                   \033[0m"
-echo -e "\033[1;37m                      @L      8B@B:                                   \033[0m" 
-echo -e "\033[1;37m                      XO     @B@B@      ,.                            \033[0m"
-echo -e "\033[1;37m                      :B.j0Pii7G@B  .;   :7FSX.                       \033[0m"
-echo -e "\033[1;37m                       @:LB@:   .@B@@r   .BMB.                        \033[0m"
-echo -e "\033[1;37m                       .@.jiBB@B@@:.@B@B@B:L7                         \033[0m" 
-echo -e "\033[1;37m                        :@v5   .:.   .:.  uX                          \033[0m"
-echo -e "\033[1;37m                         .@2F    :Jij    EL                           \033[0m"
-echo -e "\033[1;37m                           MNL    @@J  ,k.                            \033[0m"
-echo -e "\033[1;37m                            UBv   @BE .U                              \033[0m"
-echo -e "\033[1;37m                             :E7 .B@B .                               \033[0m"
-echo -e "\033[1;37m                               i  @Br                                 \033[0m"
-echo -e "\033[1;37m                                  @                                   \033[0m" 
-echo -e "\033[1;37m                                                                      \033[0m"  
-echo -e "\033[1;33m======================================================================\033[0m"
-echo ""
-rm v2ray.sh* > /dev/null 2>&1 
-echo -e "\033[01;37m       BY: @AnonyNet1991                
-       Marcos SSH                 
-       Nome: .... V2RAY 2.0.... \033[0m"
-echo ""
-read -p "Enter para continuar..."
-echo ""
-echo "America/Sao_Paulo" > /etc/timezone
-ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
-dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
-clear
-sleep 1
-echo -e "\033[0;35m-[ 00% ]\033[0m"
-apt-get update -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m--[ 10% ]\033[0m"
-apt-get install figlet -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m---[ 30% ]\033[0m"
-apt-get install htop -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m----[ 50% ]\033[0m"
-apt-get install unzip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-----[ 60% ]\033[0m"
-apt-get install zip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m------[ 80% ]\033[0m"
-apt install curl -y && apt install socat -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-------[ 100% ]\033[0m"
-clear
-echo -e ""
-echo -e "\033[1;37mV2RAY 2.0 ESSE SCRIPT FUNCIONA COMO O GERENCIADOR V2RAY WEB ...\033[0m"
-echo -e ""
-echo -e "\033[1;37mPREPARAÇAO DO SISTEMA...\033[0m"
-echo -e ""
-echo -e "\033[1;37mPREPARANDO PARA DOWLOAD...\033[0m"
-echo -e ""
-echo -e "\033[1;37mANALIZANDO.....\033[1;31m \033[0m"
-echo -e ""
-echo -e "\033[1;37mOK COMEÇANDO!!!\033[0m" 
-echo -e ""
-echo -e "\033[1;37mEXECUTANDO SCRIPT ACME\033[0m"
-echo -e ""
-curl https://get.acme.sh | sh
-echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m"
-bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
-sleep 1
-clear
-echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m"
-wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh -O /bin/tcp
-chmod +x /bin/tcp
-sleep 1
-echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m"
-sleep 1
-wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/menu -O /bin/menu
-chmod +x /bin/menu
-sleep 1
-clear
-echo "clear" >> .bash_profile
-echo "menu" >> .bash_profile
-sleep 1
-clear
-apt update -y && apt upgrade -y && apt autoremove -y && apt -f install -y && apt autoclean -y 
-echo -e "\033[1;37mVPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m"
-echo -e ""
-echo -e "\033[0;35m-[5]\033[0m"
-sleep 1
-echo -e "\033[0;35m-[4]\033[0m"
-sleep 1
-echo -e "\033[0;35m-[3]\033[0m"
-sleep 1
-echo -e "\033[0;35m-[2]\033[0m"
-sleep 1
-echo -e "\033[0;35m-[1]\033[0m"
-sleep 1
-reboot
+
+arch=$(arch)
+
+if [[ $arch == "x86_64" || $arch == "x64" || $arch == "amd64" ]]; then
+    arch="amd64"
+elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
+    arch="arm64"
+else
+    arch="amd64"
+    echo -e "${red}Falha ao detectar o esquema, use o esquema padrão: ${arch}${plain}"
+fi
+
+echo "Arquitetura: ${arch}"
+
+if [ $(getconf WORD_BIT) != '32' ] && [ $(getconf LONG_BIT) != '64' ]; then
+    echo "Este software não suporta sistema de 32 bits (x86), use o sistema de 64 bits (x86_64), se a detecção estiver errada, entre em contato com o autor"
+    exit -1
+fi
+
+os_version=""
+
+# os version
+if [[ -f /etc/os-release ]]; then
+    os_version=$(awk -F'[= ."]' '/VERSION_ID/{print $3}' /etc/os-release)
+fi
+if [[ -z "$os_version" && -f /etc/lsb-release ]]; then
+    os_version=$(awk -F'[= ."]+' '/DISTRIB_RELEASE/{print $2}' /etc/lsb-release)
+fi
+
+if [[ x"${release}" == x"centos" ]]; then
+    if [[ ${os_version} -le 6 ]]; then
+        echo -e "${red}Por favor, use o CentOS 7 ou superior！${plain}\n" && exit 1
+    fi
+elif [[ x"${release}" == x"ubuntu" ]]; then
+    if [[ ${os_version} -lt 16 ]]; then
+        echo -e "${red}Por favor, use o Ubuntu 16 ou superior！${plain}\n" && exit 1
+    fi
+elif [[ x"${release}" == x"debian" ]]; then
+    if [[ ${os_version} -lt 8 ]]; then
+        echo -e "${red}Por favor, use o Debian 8 ou superior！${plain}\n" && exit 1
+    fi
+fi
+
+install_base() {
+    if [[ x"${release}" == x"centos" ]]; then
+        yum install wget curl tar -y
+    else
+        apt install wget curl tar -y
+    fi
+}
+
+#This function will be called when user installed x-ui out of sercurity
+config_after_install() {
+    echo -e "${yellow}Por motivos de segurança, é necessário modificar à força a senha da porta e da conta após a conclusão da instalação.${plain}"
+    read -p "Por favor, defina o nome da sua conta:" config_account
+    echo -e "${yellow}O login da sua conta será definido como:${config_account}${plain}"
+    read -p "Por favor, defina a senha da sua conta:" config_password
+    echo -e "${yellow}A senha da sua conta será definida como:${config_password}${plain}"
+    read -p "Por favor, defina o acesso ao painel:" config_port
+    echo -e "${yellow}Sua porta de acesso ao painel será configurada para:${config_port}${plain}"
+    read -p "Confirme se a configuração está concluída？[y/n]": config_confirm
+    if [[ x"${config_confirm}" == x"y" || x"${config_confirm}" == x"Y" ]]; then
+        echo -e "${yellow}Confirmar configuração, configuração${plain}"
+        /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password}
+        echo -e "${yellow}Configuração de senha da conta concluída${plain}"
+        /usr/local/x-ui/x-ui setting -port ${config_port}
+        echo -e "${yellow}Configuração da porta do painel concluída${plain}"
+    else
+        echo -e "${red}Cancelado, todos os itens de configuração são configurações padrão, modifique a tempo${plain}"
+    fi
+}
+
+install_x-ui() {
+    systemctl stop x-ui
+    cd /usr/local/
+
+    if [ $# == 0 ]; then
+        last_version=$(curl -Ls "https://api.github.com/repos/vaxilu/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        if [[ ! -n "$last_version" ]]; then
+            echo -e "${red}Falha ao detectar a versão x-ui, pode ser que o limite da API do Github tenha sido excedido. Tente novamente mais tarde ou especifique manualmente a versão x-ui a ser instalada${plain}"
+            exit 1
+        fi
+        echo -e "x-ui versão mais recente detectada：${last_version}，iniciar a instalação"
+        wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz https://github.com/vaxilu/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+        if [[ $? -ne 0 ]]; then
+            echo -e "${red}Falha ao baixar x-ui, certifique-se de que seu servidor pode baixar arquivos do Github${plain}"
+            exit 1
+        fi
+    else
+        last_version=$1
+        url="https://github.com/vaxilu/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz"
+        echo -e "Iniciar a instalação x-ui v$1"
+        wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz ${url}
+        if [[ $? -ne 0 ]]; then
+            echo -e "${red}download x-ui v$1 Falhou, verifique se esta versão existe${plain}"
+            exit 1
+        fi
+    fi
+
+    if [[ -e /usr/local/x-ui/ ]]; then
+        rm /usr/local/x-ui/ -rf
+    fi
+
+    tar zxvf x-ui-linux-${arch}.tar.gz
+    rm x-ui-linux-${arch}.tar.gz -f
+    cd x-ui
+    chmod +x x-ui bin/xray-linux-${arch}
+    cp -f x-ui.service /etc/systemd/system/
+    wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/vaxilu/x-ui/main/x-ui.sh
+    chmod +x /usr/local/x-ui/x-ui.sh
+    chmod +x /usr/bin/x-ui
+    config_after_install
+    echo -e ""
+    systemctl daemon-reload
+    systemctl enable x-ui
+    systemctl start x-ui
+    echo -e "${green}x-ui v${last_version}${plain} A instalação está concluída, o painel é iniciado，"
+}
+
+echo -e "${green}iniciar a instalação${plain}"
+install_base
+install_x-ui $1
