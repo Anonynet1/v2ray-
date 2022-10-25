@@ -49,17 +49,17 @@ clear
 sleep 1
 echo -e "\033[0;35m-[ 00% ]\033[0m"
 apt-get update -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m--------------[ 10% ]\033[0m"
+echo -e "\033[0;35m---[ 10% ]\033[0m"
 apt-get install figlet -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-------------------------[ 30% ]\033[0m"
+echo -e "\033[0;35m--------------[ 30% ]\033[0m"
 apt-get install htop -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m--------------------------------------------[ 50% ]\033[0m"
+echo -e "\033[0;35m-------------------------[ 50% ]\033[0m"
 apt-get install unzip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m---------------------------------------------------------------[ 60% ]\033[0m"
+echo -e "\033[0;35m-----------------------------------[ 60% ]\033[0m"
 apt-get install zip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-------------------------------------------------------------------------[ 80% ]\033[0m"
+echo -e "\033[0;35m----------------------------------------------[ 80% ]\033[0m"
 apt install -y curl && apt install -y socat 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-----------------------------------------------------------------------------------[ 100% ]\033[0m"
+echo -e "\033[0;35m-----------------------------------------------------------------------[ 100% ]\033[0m"
 clear
 echo -e ""
 echo -e "\033[1;37mV2RAY 2.0 ESSE SCRIPT FUNCIONA COMO O GERENCIADOR V2RAY WEB ...\033[0m"
@@ -97,9 +97,9 @@ apt update -y && apt upgrade -y && apt autoremove -y && apt -f install -y && apt
 echo -e "\033[1;37mVPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m"
 echo -e ""
 echo -e "\033[0;35m-[5]\033[0m"
-echo -e "\033[0;35m-[4]\033[0m"
-echo -e "\033[0;35m-[3]\033[0m"
-echo -e "\033[0;35m-[2]\033[0m"
-echo -e "\033[0;35m-[1]\033[0m"
+echo -e "\033[0;35m----[4]\033[0m"
+echo -e "\033[0;35m-------[3]\033[0m"
+echo -e "\033[0;35m----------[2]\033[0m"
+echo -e "\033[0;35m-------------[1]\033[0m"
 sleep 1
 reboot
