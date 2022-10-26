@@ -491,34 +491,108 @@ show_usage() {
     echo "x-ui uninstall    - 卸载 x-ui 面板"
     echo "------------------------------------------"
 }
+show_show_menu() {
+  echo -e "\033[0;33m==================================================\033[0m"
+echo -e "\E[44;1;37m               ❖ V2RAY 2.0 ❖                \E[0m"
+echo -e "\033[0;33m==================================================\033[0m"
+mine_port () {
+unset portas
+portas_var=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
+i=0
+while read port; do
+var1=$(echo $port | awk '{print $1}') && var2=$(echo $port | awk '{print $9}' | awk -F ":" '{print $2}')
+[[ "$(echo -e ${portas[@]}|grep "$var1 $var2")" ]] || {
+    portas[$i]="$var1 $var2"
+    let i++
+    }
+done <<< "$portas_var"
+for((i=0; i<=${#portas[@]}; i++)); do
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && break
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -ne "${texto}"
+let i++
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && {
+   echo -e " "
+   break
+   }
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -ne "${texto}"
+let i++
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && {
+   echo -e " "
+   break
+   }
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -e "${texto}"
+done
+echo -e "\033[0;33m==================================================\033[0m"
+}
+mine_port
 
-show_menu() {
-    echo -e "
-  ${green}x-ui 面板管理脚本${plain}
-  ${green}0.${plain} 退出脚本
-————————————————
-  ${green}1.${plain} 安装 x-ui
-  ${green}2.${plain} 更新 x-ui
-  ${green}3.${plain} 卸载 x-ui
-————————————————
-  ${green}4.${plain} 重置用户名密码
-  ${green}5.${plain} 重置面板设置
-  ${green}6.${plain} 设置面板端口
-————————————————
-  ${green}7.${plain} 启动 x-ui
-  ${green}8.${plain} 停止 x-ui
-  ${green}9.${plain} 重启 x-ui
- ${green}10.${plain} 查看 x-ui 状态
- ${green}11.${plain} 查看 x-ui 日志
-————————————————
- ${green}12.${plain} 设置 x-ui 开机自启
- ${green}13.${plain} 取消 x-ui 开机自启
-————————————————
- ${green}14.${plain} 一键安装 bbr (最新内核)
- ${green}15.${plain} 一键申请SSL证书(acme申请)
+if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
+system=$(cut -d' ' -f1 /etc/issue.net)
+system+=$(echo ' ')
+system+=$(cut -d' ' -f2 /etc/issue.net |awk -F "." '{print $1}')
+elif [[ "$(grep -c "Debian" /etc/issue.net)" = "1" ]]; then
+system=$(cut -d' ' -f1 /etc/issue.net)
+system+=$(echo ' ')
+system+=$(cut -d' ' -f3 /etc/issue.net)
+else
+system=$(cut -d' ' -f1 /etc/issue.net)
+fi
+_ons=$(ps -x | grep sshd | grep -v root | grep priv | wc -l)
+_ram=$(printf ' %-9s' "$(free -h | grep -i mem | awk {'print $2'})")
+_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
+_usop=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
+_core=$(printf '%-1s' "$(grep -c cpu[0-9] /proc/stat)")
+_system=$(printf '%-14s' "$system")
+_hora=$(printf '%(%H:%M:%S)T')
+_tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
+echo -e "\033[1;37mSISTEMA            MEMÓRIA RAM      PROCESSADOR "
+echo -e "\033[1;38mOS: \033[1;37m$_system \033[1;37mTotal:\033[1;37m$_ram \033[1;37mNucleos: \033[1;37m$_core\033[0m"
+echo -e "\033[1;37mHora: \033[1;37m$_hora     \033[1;37mEm uso: \033[1;37m$_usor \033[1;37mEm uso: \033[1;37m$_usop\033[0m"
+echo -e "\033[0;33m==================================================\033[0m"
+  echo -e "
+  ${green}script de gerenciamento de painel v2ray 2.0${plain} script de saída 
+  ${green}0.${plain} 
+  ———————————————— 
+  ${green}1.${plain} instalar x-ui 
+  ${green}2.${plain} atualizar x-ui 
+  ${green}3.${plain} desinstalar x-ui
+  ———————————————— 
+ ${green}4.${plain} redefinir nome de usuário e senha 
+ ${green}5.${plain} redefinir as configurações do painel 
+ ${green}6.${plain} definir porta do painel 
+———————————————— 
+  ${green}7.${plain} iniciar x-ui 
+  ${green}8.${plain} parar x-ui 
+  ${green}9.${plain} reinicie o x-ui 
+  ${green}10.${plain} Ver status x-ui 
+  ${green}11.${plain} Ver registro x-ui 
+———————————————— 
+  ${green}12.${plain} define o x-ui para iniciar automaticamente 
+  ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
+  ———————————————— 
+  ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
  "
     show_status
-    echo && read -p "请输入选择 [0-14]: " num
+    echo && read -p "Por favor, insira uma seleção [0-14]: " num
+
 
     case "${num}" in
     0)
