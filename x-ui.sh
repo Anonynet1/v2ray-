@@ -9,15 +9,15 @@ plain='\033[0m'
 
 #Add some basic function here
 function LOGD() {
-    echo -e "${yellow}[DEG] $* ${plain}"
+    echo -e "${yellow}[CANCELADO] $* ${plain}"
 }
 
 function LOGE() {
-    echo -e "${red}[ERR] $* ${plain}"
+    echo -e "${red}[ERRO] $* ${plain}"
 }
 
 function LOGI() {
-    echo -e "${green}[INF] $* ${plain}"
+    echo -e "${green}[INFO] $* ${plain}"
 }
 # check root
 [[ $EUID -ne 0 ]] && LOGE "Erro: Você deve ser root para executar este script! \n" && exit 1
