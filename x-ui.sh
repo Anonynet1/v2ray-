@@ -117,7 +117,3 @@ update() {
     if [[ $? == 0 ]]; then
         LOGI "A atualização está concluída, o painel foi reiniciado automaticamente "
         exit 0
-    fi
-}
-    show_menu
-fi
