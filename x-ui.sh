@@ -575,16 +575,16 @@ echo -e "\033[0;33m==================================================\033[0m"
   ${green}2.${plain} atualizar x-ui 
   ${green}3.${plain} desinstalar x-ui
   ———————————————— 
- ${green}4.${plain} redefinir nome de usuário e senha 
- ${green}5.${plain} redefinir as configurações do painel 
- ${green}6.${plain} definir porta do painel 
-———————————————— 
+  ${green}4.${plain} redefinir nome de usuário e senha 
+  ${green}5.${plain} redefinir as configurações do painel 
+  ${green}6.${plain} definir porta do painel 
+  ———————————————— 
   ${green}7.${plain} iniciar x-ui 
   ${green}8.${plain} parar x-ui 
   ${green}9.${plain} reinicie o x-ui 
   ${green}10.${plain} Ver status x-ui 
   ${green}11.${plain} Ver registro x-ui 
-———————————————— 
+  ———————————————— 
   ${green}12.${plain} define o x-ui para iniciar automaticamente 
   ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
   ———————————————— 
