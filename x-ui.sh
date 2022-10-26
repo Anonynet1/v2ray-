@@ -396,8 +396,6 @@ show_xray_status() {
         echo -e "xray 状态: ${green}运行${plain}"
     else
         echo -e "xray 状态: ${red}未运行${plain}"
-    fi
-}
-
-start_menu
-
+        fi
+    else
+exit 1
