@@ -396,78 +396,6 @@ show_xray_status() {
         echo -e "xray 状态: ${green}运行${plain}"
     else
         echo -e "xray 状态: ${red}未运行${plain}"
-    fi
-}
-
-ssl_cert_issue() {
-    echo -E ""
-    LOGD "******使用说明******"
-    LOGI "该脚本将使用Acme脚本申请证书,使用时需保证:"
-    LOGI "1.知晓Cloudflare 注册邮箱"
-    LOGI "2.知晓Cloudflare Global API Key"
-    LOGI "3.域名已通过Cloudflare进行解析到当前服务器"
-    LOGI "4.该脚本申请证书默认安装路径为/root/cert目录"
-    confirm "我已确认以上内容[y/n]" "y"
-    if [ $? -eq 0 ]; then
-        cd ~
-        LOGI "安装Acme脚本"
-        curl https://get.acme.sh | sh
-        if [ $? -ne 0 ]; then
-            LOGE "安装acme脚本失败"
-            exit 1
-        fi
-        CF_Domain=""
-        CF_GlobalKey=""
-        CF_AccountEmail=""
-        certPath=/root/cert
-        if [ ! -d "$certPath" ]; then
-            mkdir $certPath
-        else
-            rm -rf $certPath
-            mkdir $certPath
-        fi
-        LOGD "请设置域名:"
-        read -p "Input your domain here:" CF_Domain
-        LOGD "你的域名设置为:${CF_Domain}"
-        LOGD "请设置API密钥:"
-        read -p "Input your key here:" CF_GlobalKey
-        LOGD "你的API密钥为:${CF_GlobalKey}"
-        LOGD "请设置注册邮箱:"
-        read -p "Input your email here:" CF_AccountEmail
-        LOGD "你的注册邮箱为:${CF_AccountEmail}"
-        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-        if [ $? -ne 0 ]; then
-            LOGE "修改默认CA为Lets'Encrypt失败,脚本退出"
-            exit 1
-        fi
-        export CF_Key="${CF_GlobalKey}"
-        export CF_Email=${CF_AccountEmail}
-        ~/.acme.sh/acme.sh --issue --dns dns_cf -d ${CF_Domain} -d *.${CF_Domain} --log
-        if [ $? -ne 0 ]; then
-            LOGE "证书签发失败,脚本退出"
-            exit 1
-        else
-            LOGI "证书签发成功,安装中..."
-        fi
-        ~/.acme.sh/acme.sh --installcert -d ${CF_Domain} -d *.${CF_Domain} --ca-file /root/cert/ca.cer \
-            --cert-file /root/cert/${CF_Domain}.cer --key-file /root/cert/${CF_Domain}.key \
-            --fullchain-file /root/cert/fullchain.cer
-        if [ $? -ne 0 ]; then
-            LOGE "证书安装失败,脚本退出"
-            exit 1
-        else
-            LOGI "证书安装成功,开启自动更新..."
-        fi
-        ~/.acme.sh/acme.sh --upgrade --auto-upgrade
-        if [ $? -ne 0 ]; then
-            LOGE "自动更新设置失败,脚本退出"
-            ls -lah cert
-            chmod 755 $certPath
-            exit 1
-        else
-            LOGI "证书已安装且已开启自动更新,具体信息如下"
-            ls -lah cert
-            chmod 755 $certPath
         fi
     else
         show_menu
@@ -494,27 +422,27 @@ show_usage() {
 
 show_menu() {
     echo -e "
-  ${green}script do painel${plain} 
-  ${green}0.${plain} saír
-  ———————————————— 
-  ${green}1.${plain} instalar x-ui 
-  ${green}2.${plain} atualizar x-ui 
-  ${green}3.${plain} desinstalar x-ui
-  ———————————————— 
+ ${green}script do painel${plain} 
+ ${green}0.${plain} saír
+———————————————— 
+ ${green}1.${plain} instalar x-ui 
+ ${green}2.${plain} atualizar x-ui 
+ ${green}3.${plain} desinstalar x-ui
+———————————————— 
  ${green}4.${plain} redefinir nome de usuário e senha 
  ${green}5.${plain} redefinir as configurações do painel 
  ${green}6.${plain} definir porta do painel 
 ———————————————— 
-  ${green}7.${plain} iniciar x-ui 
-  ${green}8.${plain} parar x-ui 
-  ${green}9.${plain} reinicie o x-ui 
-  ${green}10.${plain} Ver status x-ui 
-  ${green}11.${plain} Ver registro x-ui 
+ ${green}7.${plain} iniciar x-ui 
+ ${green}8.${plain} parar x-ui 
+ ${green}9.${plain} reinicie o x-ui 
+ ${green}10.${plain} Ver status x-ui 
+ ${green}11.${plain} Ver registro x-ui 
 ———————————————— 
-  ${green}12.${plain} define o x-ui para iniciar automaticamente 
-  ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
-  ———————————————— 
-  ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
+ ${green}12.${plain} define o x-ui para iniciar automaticamente 
+ ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
+———————————————— 
+ ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
  "
     show_status
     echo && read -p "Por favor, insira uma seleção [0-14]: " num
@@ -564,9 +492,6 @@ show_menu() {
         ;;
     14)
         install_bbr
-        ;;
-    15)
-        ssl_cert_issue
         ;;
     *)
         LOGE "请输入正确的数字 [0-14]"
