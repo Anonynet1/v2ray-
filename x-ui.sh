@@ -470,4 +470,4 @@ ssl_cert_issue() {
         fi
 else
 fi
-exit 0
+exit 1
