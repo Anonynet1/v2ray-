@@ -4,7 +4,7 @@ export PATH
 
 #=================================================
 #	System Required: CentOS 6/7,Debian 8/9,Ubuntu 16+
-#	Description: BBR+BBR魔改版+BBRplus+ Lotserver o sistema atual não é compatível
+#	Description: BBR+BBR魔改版+BBRplus+Lotserver
 #	Version: 1.4.0
 #	Author: 千影,cx9208
 #	Blog: https://www.939.me/
@@ -43,11 +43,11 @@ installbbr(){
 	fi
 	detele_kernel
 	BBR_grub
-	echo -e "${Tip} Depois de reiniciar o VPS, execute novamente o script para abrir${Red_font_prefix}BBR/BBR PLUS${Font_color_suffix}"
-	stty erase '^H' && read -p "Você precisa reiniciar o VPS antes que ele possa ser ligado BBR/BBR PLUS，se deve reiniciar agora ? [Y/n] :" yn
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR/BBR魔改版${Font_color_suffix}"
+	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR/BBR魔改版，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
-		echo -e "${Info} VPS reiniciando..."
+		echo -e "${Info} VPS 重启中..."
 		reboot
 	fi
 }
@@ -70,25 +70,25 @@ installbbrplus(){
 	fi
 	detele_kernel
 	BBR_grub
-	echo -e "${Tip} Depois de reiniciar o VPS, execute novamente o script para habilitar${Red_font_prefix}BBRplus${Font_color_suffix}"
-	stty erase '^H' && read -p "Você precisa reiniciar o VPS antes que ele possa ser ligado BBRplus，se deve reiniciar agora ? [y/n] :" yn
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBRplus${Font_color_suffix}"
+	stty erase '^H' && read -p "需要重启VPS后，才能开启BBRplus，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
-		echo -e "${Info} VPS reiniciando..."
+		echo -e "${Info} VPS 重启中..."
 		reboot
 	fi
 }
 
-#安装 Lotserver o sistema atual não é compatível内核
+#安装Lotserver内核
 installlot(){
 	if [[ "${release}" == "centos" ]]; then
-		rpm --import http://${github}/ Lotserver o sistema atual não é compatível/${release}/RPM-GPG-KEY-elrepo.org
+		rpm --import http://${github}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
 		yum remove -y kernel-firmware
-		yum install -y http://${github}/ Lotserver o sistema atual não é compatível/${release}/${version}/${bit}/kernel-firmware-${kernel_version}.rpm
-		yum install -y http://${github}/ Lotserver o sistema atual não é compatível/${release}/${version}/${bit}/kernel-${kernel_version}.rpm
+		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-firmware-${kernel_version}.rpm
+		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-${kernel_version}.rpm
 		yum remove -y kernel-headers
-		yum install -y http://${github}/ Lotserver o sistema atual não é compatível/${release}/${version}/${bit}/kernel-headers-${kernel_version}.rpm
-		yum install -y http://${github}/ Lotserver o sistema atual não é compatível/${release}/${version}/${bit}/kernel-devel-${kernel_version}.rpm
+		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-headers-${kernel_version}.rpm
+		yum install -y http://${github}/lotserver/${release}/${version}/${bit}/kernel-devel-${kernel_version}.rpm
 	elif [[ "${release}" == "ubuntu" ]]; then
 		bash <(wget --no-check-certificate -qO- "http://${github}/Debian_Kernel.sh")
 	elif [[ "${release}" == "debian" ]]; then
@@ -96,8 +96,8 @@ installlot(){
 	fi
 	detele_kernel
 	BBR_grub
-	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix} Lotserver o sistema atual não é compatível${Font_color_suffix}"
-	stty erase '^H' && read -p "需要重启VPS后，才能开启 Lotserver o sistema atual não é compatível，是否现在重启 ? [Y/n] :" yn
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}Lotserver${Font_color_suffix}"
+	stty erase '^H' && read -p "需要重启VPS后，才能开启Lotserver，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
 		echo -e "${Info} VPS 重启中..."
@@ -116,7 +116,8 @@ startbbr(){
 		echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 	fi
 	sysctl -p
-	echo -e "${Info}BBR Iniciado com sucesso
+	echo -e "${Info}BBR启动成功！"
+}
 
 #启用BBRplus
 startbbrplus(){
@@ -124,7 +125,7 @@ startbbrplus(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbrplus" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBRplus Iniciado com sucesso！"
+	echo -e "${Info}BBRplus启动成功！"
 }
 
 #编译并启用BBR魔改
@@ -164,7 +165,7 @@ startbbrmod(){
 	echo "net.ipv4.tcp_congestion_control=tsunami" >> /etc/sysctl.conf
 	sysctl -p
     cd .. && rm -rf bbrmod
-	echo -e "${Info}Revisão mágica BBR lançada com sucesso！"
+	echo -e "${Info}魔改版BBR启动成功！"
 }
 
 #编译并启用BBR魔改
@@ -202,11 +203,11 @@ startbbrmod_nanqinlang(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=nanqinlang" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}Revisão mágica BBR lançada com sucesso！"
+	echo -e "${Info}魔改版BBR启动成功！"
 }
 
-#启用 Lotserver o sistema atual não é compatível
-start Lotserver o sistema atual não é compatível(){
+#启用Lotserver
+startlotserver(){
 	remove_all
 	if [[ "${release}" == "centos" ]]; then
 		yum install ethtool
@@ -214,12 +215,12 @@ start Lotserver o sistema atual não é compatível(){
 		apt-get update
 		apt-get install ethtool
 	fi
-	bash <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/chiakge/ Lotserver o sistema atual não é compatível/master/Install.sh) install
+	bash <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/chiakge/lotServer/master/Install.sh) install
 	sed -i '/advinacc/d' /appex/etc/config
 	sed -i '/maxmode/d' /appex/etc/config
 	echo -e "advinacc=\"1\"
 maxmode=\"1\"">>/appex/etc/config
-	/appex/bin/ Lotserver o sistema atual não é compatível.sh restart
+	/appex/bin/lotServer.sh restart
 	start_menu
 }
 
@@ -257,8 +258,8 @@ remove_all(){
 	sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
-	if [[ -e /appex/bin/ Lotserver o sistema atual não é compatível.sh ]]; then
-		bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/ Lotserver o sistema atual não é compatível/raw/master/Install.sh) uninstall
+	if [[ -e /appex/bin/lotServer.sh ]]; then
+		bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/lotServer/raw/master/Install.sh) uninstall
 	fi
 	clear
 	echo -e "${Info}:清除加速完成。"
@@ -302,10 +303,10 @@ net.ipv4.ip_forward = 1">>/etc/sysctl.conf
 	echo "*               soft    nofile           1000000
 *               hard    nofile          1000000">/etc/security/limits.conf
 	echo "ulimit -SHn 1000000">>/etc/profile
-	read -p "A configuração de otimização do sistema só pode entrar em vigor após reiniciar o VPS. Deseja reiniciar agora ? [Y/n] :" yn
+	read -p "需要重启VPS后，才能生效系统优化配置，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
-		echo -e "${Info} VVPS reiniciando..."
+		echo -e "${Info} VPS 重启中..."
 		reboot
 	fi
 }
@@ -333,35 +334,35 @@ Update_Shell(){
 #开始菜单
 start_menu(){
 clear
-echo && echo -e "Script de gerenciamento de instalação com um clique de aceleração TCP${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- 就是爱生活 | 94ish.me --
   
- ${Green_font_prefix}0.${Font_color_suffix} script de atualização
-————————————Gerenciamento de kernel————————————
- ${Green_font_prefix}1.${Font_color_suffix} Instale o kernel modificado mágico BBR/BBR
- ${Green_font_prefix}2.${Font_color_suffix} Instale a versão BBRplus do kernel 
- ${Green_font_prefix}3.${Font_color_suffix} Instale o Kernel do  Lotserver o sistema atual não é compatível (Sharp Speed)
-————————————Acelere o gerenciamento————————————
- ${Green_font_prefix}4.${Font_color_suffix} Acelere com BBR
- ${Green_font_prefix}5.${Font_color_suffix} Use a revisão mágica do BBR para acelerar
- ${Green_font_prefix}6.${Font_color_suffix} Use a revisão mágica violenta do BBR para acelerar (alguns sistemas não são suportados)
- ${Green_font_prefix}7.${Font_color_suffix} Use a revisão mágica violenta do BBR para acelerar (alguns sistemas não são suportados)
- ${Green_font_prefix}8.${Font_color_suffix} Use  Lotserver o sistema atual não é compatível (velocidade acentuada) para acelerar
-————————————Gestão diversa————————————
- ${Green_font_prefix}9.${Font_color_suffix} Desinstale toda a aceleração
- ${Green_font_prefix}10.${Font_color_suffix} Otimização da configuração do sistema
- ${Green_font_prefix}11.${Font_color_suffix} Sair do script
+ ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
+————————————内核管理————————————
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR/BBR魔改版内核
+ ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 
+ ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核
+————————————加速管理————————————
+ ${Green_font_prefix}4.${Font_color_suffix} 使用BBR加速
+ ${Green_font_prefix}5.${Font_color_suffix} 使用BBR魔改版加速
+ ${Green_font_prefix}6.${Font_color_suffix} 使用暴力BBR魔改版加速(不支持部分系统)
+ ${Green_font_prefix}7.${Font_color_suffix} 使用BBRplus版加速
+ ${Green_font_prefix}8.${Font_color_suffix} 使用Lotserver(锐速)加速
+————————————杂项管理————————————
+ ${Green_font_prefix}9.${Font_color_suffix} 卸载全部加速
+ ${Green_font_prefix}10.${Font_color_suffix} 系统配置优化
+ ${Green_font_prefix}11.${Font_color_suffix} 退出脚本
 ————————————————————————————————" && echo
 
 	check_status
 	if [[ ${kernel_status} == "noinstall" ]]; then
-		echo -e " Estado atual: ${Green_font_prefix}Não instalado${Font_color_suffix} kernel acelerado ${Red_font_prefix}Por favor instale o kernel primeiro${Font_color_suffix}"
+		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix} 加速内核 ${Red_font_prefix}请先安装内核${Font_color_suffix}"
 	else
-		echo -e " Estado atual: ${Green_font_prefix} Instalado ${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} kernel acelerado , ${Green_font_prefix}${run_status}${Font_color_suffix}"
+		echo -e " 当前状态: ${Green_font_prefix}已安装${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} 加速内核 , ${Green_font_prefix}${run_status}${Font_color_suffix}"
 		
 	fi
 echo
-read -p " Por favor, digite os números [0-11]:" num
+read -p " 请输入数字 [0-11]:" num
 case "$num" in
 	0)
 	Update_Shell
@@ -388,7 +389,7 @@ case "$num" in
 	startbbrplus
 	;;
 	8)
-	start Lotserver o sistema atual não é compatível
+	startlotserver
 	;;
 	9)
 	remove_all
@@ -401,7 +402,7 @@ case "$num" in
 	;;
 	*)
 	clear
-	echo -e "${Error}:Por favor, digite o número correto [0-11]"
+	echo -e "${Error}:请输入正确数字 [0-11]"
 	sleep 5s
 	start_menu
 	;;
@@ -414,30 +415,30 @@ detele_kernel(){
 	if [[ "${release}" == "centos" ]]; then
 		rpm_total=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | wc -l`
 		if [ "${rpm_total}" > "1" ]; then
-			echo -e "Detectou ${rpm_total} os kernels restantes, comece a desinstalar..."
+			echo -e "检测到 ${rpm_total} 个其余内核，开始卸载..."
 			for((integer = 1; integer <= ${rpm_total}; integer++)); do
 				rpm_del=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
-				echo -e "iniciar a desinstalação ${rpm_del} núcleo..."
+				echo -e "开始卸载 ${rpm_del} 内核..."
 				rpm --nodeps -e ${rpm_del}
-				echo -e "Desinstalar ${rpm_del} Descarregamento do kernel concluído, continuar..."
+				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
 			done
-			echo --nodeps -e "A desinstalação do kernel foi concluída, continue..."
+			echo --nodeps -e "内核卸载完毕，继续..."
 		else
-			echo -e " Número incorreto de núcleos detectados, verifique !" && exit 1
+			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		deb_total=`dpkg -l | grep linux-image | awk '{print $2}' | grep -v "${kernel_version}" | wc -l`
 		if [ "${deb_total}" > "1" ]; then
-			echo -e "detectou ${deb_total} os kernels restantes, comece a desinstalar..."
+			echo -e "检测到 ${deb_total} 个其余内核，开始卸载..."
 			for((integer = 1; integer <= ${deb_total}; integer++)); do
 				deb_del=`dpkg -l|grep linux-image | awk '{print $2}' | grep -v "${kernel_version}" | head -${integer}`
-				echo -e "Iniciar a desinstalação ${deb_del} Núcleo..."
+				echo -e "开始卸载 ${deb_del} 内核..."
 				apt-get purge -y ${deb_del}
-				echo -e "Desinstalar ${deb_del} Descarregamento do kernel concluído, continue..."
+				echo -e "卸载 ${deb_del} 内核卸载完成，继续..."
 			done
-			echo -e "A desinstalação do kernel foi concluída, continue..."
+			echo -e "内核卸载完毕，继续..."
 		else
-			echo -e "Número incorreto de núcleos detectados, verifique !" && exit 1
+			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
 		fi
 	fi
 }
@@ -510,22 +511,22 @@ check_sys_bbr(){
 		if [[ ${version} -ge "6" ]]; then
 			installbbr
 		else
-			echo -e "${Error} O kernel BBR não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} -ge "8" ]]; then
 			installbbr
 		else
-			echo -e "${Error} O kernel BBR não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 		if [[ ${version} -ge "14" ]]; then
 			installbbr
 		else
-			echo -e "${Error} O kernel BBR não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	else
-		echo -e "${Error} O kernel BBR não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+		echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
 }
 
@@ -535,22 +536,22 @@ check_sys_bbrplus(){
 		if [[ ${version} -ge "6" ]]; then
 			installbbrplus
 		else
-			echo -e "${Error} O kernel BBRplus não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} -ge "8" ]]; then
 			installbbrplus
 		else
-			echo -e "${Error} O kernel BBRplus não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 		if [[ ${version} -ge "14" ]]; then
 			installbbrplus
 		else
-			echo -e "${Error} O kernel BBR não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	else
-		echo -e "${Error} O kernel BBR não suporta o sistema atual ${release} ${version} ${bit} !" && exit 1
+		echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
 }
 
@@ -567,7 +568,7 @@ check_sys_Lotsever(){
 			kernel_version="3.10.0-327"
 			installlot
 		else
-			echo -e "${Error} Lotsever Lotserver o sistema atual não é compatível ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} Lotsever不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} = "7" || ${version} = "8" ]]; then
@@ -584,7 +585,7 @@ check_sys_Lotsever(){
 				installlot
 			fi
 		else
-			echo -e "${Error} Lotsever Lotserver o sistema atual não é compatível ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} Lotsever不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 		if [[ ${version} -ge "12" ]]; then
@@ -596,10 +597,10 @@ check_sys_Lotsever(){
 				installlot
 			fi
 		else
-			echo -e "${Error} Lotsever Lotserver o sistema atual não é compatível ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} Lotsever不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	else
-		echo -e "${Error} Lotsever Lotserver o sistema atual não é compatível ${release} ${version} ${bit} !" && exit 1
+		echo -e "${Error} Lotsever不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
 }
 
@@ -609,67 +610,67 @@ check_status(){
 	if [[ ${kernel_version_full} = "4.14.129-bbrplus" ]]; then
 		kernel_status="BBRplus"
 	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.8.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" || ${kernel_version} = "4.9.0" ]]; then
-		kernel_status=" Lotserver o sistema atual não é compatível"
+		kernel_status="Lotserver"
 	elif [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` == "4" ]] && [[ `echo ${kernel_version} | awk -F'.' '{print $2}'` -ge 9 ]] || [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` -ge "5" ]]; then
 		kernel_status="BBR"
 	else 
 		kernel_status="noinstall"
 	fi
 
-	if [[ ${kernel_status} == " Lotserver o sistema atual não é compatível" ]]; then
-		if [[ -e /appex/bin/ Lotserver o sistema atual não é compatível.sh ]]; then
-			run_status=`bash /appex/bin/ Lotserver o sistema atual não é compatível.sh status | grep " Lotserver o sistema atual não é compatível" | awk  '{print $3}'`
+	if [[ ${kernel_status} == "Lotserver" ]]; then
+		if [[ -e /appex/bin/lotServer.sh ]]; then
+			run_status=`bash /appex/bin/lotServer.sh status | grep "LotServer" | awk  '{print $3}'`
 			if [[ ${run_status} = "running!" ]]; then
-				run_status="Iniciado com sucesso"
+				run_status="启动成功"
 			else 
-				run_status="Falhou ao ativar"
+				run_status="启动失败"
 			fi
 		else 
-			run_status="Módulo de aceleração não instalado"
+			run_status="未安装加速模块"
 		fi
 	elif [[ ${kernel_status} == "BBR" ]]; then
 		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{gsub("^[ \t]+|[ \t]+$", "", $2);print $2}'`
 		if [[ ${run_status} == "bbr" ]]; then
 			run_status=`lsmod | grep "bbr" | awk '{print $1}'`
 			if [[ ${run_status} == "tcp_bbr" ]]; then
-				run_status="BBR Iniciado com sucesso"
+				run_status="BBR启动成功"
 			else 
-				run_status="BBR Falhou ao ativar"
+				run_status="BBR启动失败"
 			fi
 		elif [[ ${run_status} == "tsunami" ]]; then
 			run_status=`lsmod | grep "tsunami" | awk '{print $1}'`
 			if [[ ${run_status} == "tcp_tsunami" ]]; then
-				run_status="BBR Revisão mágica iniciada com sucesso"
+				run_status="BBR魔改版启动成功"
 			else 
-				run_status="BBR A revisão mágica falhou ao iniciar"
+				run_status="BBR魔改版启动失败"
 			fi
 		elif [[ ${run_status} == "nanqinlang" ]]; then
 			run_status=`lsmod | grep "nanqinlang" | awk '{print $1}'`
 			if [[ ${run_status} == "tcp_nanqinlang" ]]; then
-				run_status="Revisão mágica do Violent BBR lançada com sucesso"
+				run_status="暴力BBR魔改版启动成功"
 			else 
-				run_status="A revisão mágica do BBR violento falhou ao iniciar"
+				run_status="暴力BBR魔改版启动失败"
 			fi
 		else 
-			run_status="Módulo de aceleração não instalado"
+			run_status="未安装加速模块"
 		fi
 	elif [[ ${kernel_status} == "BBRplus" ]]; then
 		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{gsub("^[ \t]+|[ \t]+$", "", $2);print $2}'`
 		if [[ ${run_status} == "bbrplus" ]]; then
 			run_status=`lsmod | grep "bbrplus" | awk '{print $1}'`
 			if [[ ${run_status} == "tcp_bbrplus" ]]; then
-				run_status="BBRplus iniciado com sucesso"
+				run_status="BBRplus启动成功"
 			else 
-				run_status="BBRplus falhou ao iniciar"
+				run_status="BBRplus启动失败"
 			fi
 		else 
-			run_status="Módulo de aceleração não instalado"
+			run_status="未安装加速模块"
 		fi
 	fi
 }
 
-#############Componentes de verificação do sistema#############
+#############系统检测组件#############
 check_sys
 check_version
-[[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} Este roteiro Lotserver o sistema atual não é compatível ${release} !" && exit 1
+[[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 start_menu
