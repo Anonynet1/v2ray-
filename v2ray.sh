@@ -78,9 +78,13 @@ clear
 sleep 1
 curl https://get.acme.sh | sh
 echo -e ""
-echo -e "\033[1;37mCERTIFICADO ZERO SSL\033[0m"
 clear
-sleep 1
+echo -e "\033[1;37mCERTIFICADO ZERO SSL\033[0m"
+echo -e ""
+echo -e "\033[01;37m  ANTES DE SEGUIR FAÇA UM CADASTRO NO SITE ZERO SSL \033[0m"
+echo ""
+read -p "Enter para continuar..."
+echo ""
 wget https://www.dropbox.com/s/urum6eywbcxzv42/inst && bash inst
 rm inst* > /dev/null 2>&1 
 clear
