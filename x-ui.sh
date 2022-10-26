@@ -396,7 +396,7 @@ show_xray_status() {
         echo -e "xray 状态: ${green}运行${plain}"
     else
         echo -e "xray 状态: ${red}未运行${plain}"
-        fi
+    fi
 }
 
 ssl_cert_issue() {
@@ -472,6 +472,8 @@ ssl_cert_issue() {
     else
         show_menu
     fi
+}
+
 show_usage() {
     echo "x-ui 管理脚本使用方法: "
     echo "------------------------------------------"
@@ -491,6 +493,7 @@ show_usage() {
 }
 
 show_menu() {
+    
     echo -e "
  ${green}script do painel${plain} 
  ${green}0.${plain} saír
@@ -562,6 +565,9 @@ show_menu() {
         ;;
     14)
         install_bbr
+        ;;
+    15)
+        ssl_cert_issue
         ;;
     *)
         LOGE "请输入正确的数字 [0-14]"
