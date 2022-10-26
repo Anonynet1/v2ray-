@@ -401,4 +401,4 @@ show_xray_status() {
   if [ $? -ne 0 ]; then
 else
 fi
-exit 0
+exit 1
