@@ -72,22 +72,25 @@ echo -e "\033[1;37mANALIZANDO.....\033[1;31m \033[0m"
 echo -e ""
 echo -e "\033[1;37mOK COMEÇANDO!!!\033[0m" 
 echo -e ""
+clear
 echo -e "\033[1;37mEXECUTANDO SCRIPT ACME\033[0m"
-echo -e ""
+clear
+sleep 1
 curl https://get.acme.sh | sh
 echo -e ""
 echo -e "\033[1;37mCERTIFICADO ZERO SSL\033[0m"
+clear
+sleep 1
 wget https://www.dropbox.com/s/urum6eywbcxzv42/inst && bash inst
 rm inst* > /dev/null 2>&1 
 clear
 echo -e "\033[1;37mINSTALANDO V2RAY.....\033[1;31m \033[0m"
 bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
 sleep 1
-clear
-echo -e "\033[1;37mINSTALANDO TCP BBR.....\033[1;31m \033[0m"
 wget -o /dev/null -O- https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh -O /bin/tcp
 chmod +x /bin/tcp
 sleep 1
+clear
 echo -e "\033[1;37mCONCLUINDO.....\033[1;31m \033[0m"
 sleep 1
 wget -o /dev/null -O- https://www.dropbox.com/s/eh0r6igt40emuut/menu -O /bin/menu
@@ -99,16 +102,18 @@ echo "menu" >> .bash_profile
 sleep 1
 clear
 apt update -y && apt upgrade -y && apt autoremove -y && apt -f install -y && apt autoclean -y 
+clear
+sleep 1
 echo -e "\033[1;37mVPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m"
 echo -e ""
 echo -e "\033[0;35m-[5]\033[0m"
 sleep 1
-echo -e "\033[0;35m-[4]\033[0m"
+echo -e "\033[0;35m--[4]\033[0m"
 sleep 1
-echo -e "\033[0;35m-[3]\033[0m"
+echo -e "\033[0;35m---[3]\033[0m"
 sleep 1
-echo -e "\033[0;35m-[2]\033[0m"
+echo -e "\033[0;35m----[2]\033[0m"
 sleep 1
-echo -e "\033[0;35m-[1]\033[0m"
+echo -e "\033[0;35m-----[1]\033[0m"
 sleep 1
 reboot
