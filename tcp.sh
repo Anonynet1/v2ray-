@@ -71,7 +71,7 @@ installbbrplus(){
 	detele_kernel
 	BBR_grub
 	echo -e "${Tip} Depois de reiniciar o VPS, execute novamente o script para habilitar${Red_font_prefix}BBRplus${Font_color_suffix}"
-	stty erase '^H' && read -p "Você precisa reiniciar o VPS antes que ele possa ser ligado BBRplus，se deve reiniciar agora ? [Y/n] :" yn
+	stty erase '^H' && read -p "Você precisa reiniciar o VPS antes que ele possa ser ligado BBRplus，se deve reiniciar agora ? [y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
 		echo -e "${Info} VPS reiniciando..."
@@ -316,9 +316,9 @@ Update_Shell(){
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} Falha ao detectar a versão mais recente !" && start_menu
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "nova versão encontrada[ ${sh_new_ver} ]，se atualizar ？[Y/n]"
-		read -p "(predefinição: y):" yn
-		[[ -z "${yn}" ]] && yn="y"
-		if [[ ${yn} == [Yy] ]]; then
+		read -p "(predefinição: y):" [y/n] :" yn
+	[ -z "${yn}" ] && yn="y"
+	if [[ $yn == [Yy] ]]; then
 			wget -N --no-check-certificate http://${github}/tcp.sh && chmod +x tcp.sh
 			echo -e "O script foi atualizado para a versão mais recente[ ${sh_new_ver} ] !"
 		else
@@ -673,3 +673,4 @@ check_sys
 check_version
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} Este roteiro Lotserver o sistema atual não é compatível ${release} !" && exit 1
 start_menu
+
