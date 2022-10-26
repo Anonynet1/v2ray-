@@ -668,7 +668,7 @@ check_status(){
 	fi
 }
 
-#############系统检测组件#############
+#############Componentes de verificação do sistema#############
 check_sys
 check_version
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} Este roteiro Lotserver o sistema atual não é compatível ${release} !" && exit 1
