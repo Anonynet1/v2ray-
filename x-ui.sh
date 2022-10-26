@@ -491,9 +491,10 @@ show_usage() {
     echo "x-ui uninstall    - 卸载 x-ui 面板"
     echo "------------------------------------------"
 }
-show_show_menu() {
-  echo -e "
-  ${green}script de gerenciamento de painel v2ray 2.0${plain} script de saída 
+
+show_menu() {
+    echo -e "
+ ${green}script de gerenciamento de painel v2ray 2.0${plain} script de saída 
   ${green}0.${plain} 
   ———————————————— 
   ${green}1.${plain} instalar x-ui 
@@ -517,7 +518,6 @@ show_show_menu() {
  "
     show_status
     echo && read -p "Por favor, insira uma seleção [0-14]: " num
-
 
     case "${num}" in
     0)
@@ -564,9 +564,6 @@ show_show_menu() {
         ;;
     14)
         install_bbr
-        ;;
-    15)
-        ssl_cert_issue
         ;;
     *)
         LOGE "请输入正确的数字 [0-14]"
