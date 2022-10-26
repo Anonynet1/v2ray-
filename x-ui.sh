@@ -472,3 +472,4 @@ ssl_cert_issue() {
 else
     show_menu
 fi
+exit 0
