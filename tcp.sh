@@ -311,21 +311,21 @@ net.ipv4.ip_forward = 1">>/etc/sysctl.conf
 }
 #更新脚本
 Update_Shell(){
-	echo -e "A versão atual é [ ${sh_ver} ]，Comece a detectar a versão mais recente..."
+	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
 	sh_new_ver=$(wget --no-check-certificate -qO- "http://${github}/tcp.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1)
-	[[ -z ${sh_new_ver} ]] && echo -e "${Error} Falha ao detectar a versão mais recente !" && start_menu
+	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && start_menu
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
-		echo -e "nova versão encontrada[ ${sh_new_ver} ]，se atualizar ？[Y/n]"
-		read -p "(predefinição: y):" [y/n] :" yn
-	[ -z "${yn}" ] && yn="y"
-	if [[ $yn == [Yy] ]]; then
+		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
+		read -p "(默认: y):" yn
+		[[ -z "${yn}" ]] && yn="y"
+		if [[ ${yn} == [Yy] ]]; then
 			wget -N --no-check-certificate http://${github}/tcp.sh && chmod +x tcp.sh
-			echo -e "O script foi atualizado para a versão mais recente[ ${sh_new_ver} ] !"
+			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
 		else
-			echo && echo "	Cancelado..." && echo
+			echo && echo "	已取消..." && echo
 		fi
 	else
-		echo -e "Atualmente a versão mais recente[ ${sh_new_ver} ] !"
+		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
 		sleep 5s
 	fi
 }
@@ -673,4 +673,3 @@ check_sys
 check_version
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} Este roteiro Lotserver o sistema atual não é compatível ${release} !" && exit 1
 start_menu
-
