@@ -94,7 +94,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -113,7 +113,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
     if [[ $? == 0 ]]; then
         LOGI "更新完成，已自动重启面板 "
         exit 0
@@ -287,13 +287,13 @@ migrate_v2_ui() {
 
 install_bbr() {
     # temporary workaround for installing bbr
-    bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
+    bash <(curl -L -s https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh)
     echo ""
     before_show_menu
 }
 
 update_shell() {
-    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/vaxilu/x-ui/raw/master/x-ui.sh
+    wget -O /usr/bin/x-ui -N --no-check-certificate https://raw.githubusercontent.com/Anonynet1/v2ray-/main/x-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "下载脚本失败，请检查本机能否连接 Github"
@@ -509,16 +509,14 @@ show_menu() {
  ${green}7.${plain} iniciar x-ui 
  ${green}8.${plain} parar x-ui 
  ${green}9.${plain} reinicie o x-ui 
- ${green}10.${plain} Ver status x-ui 
- ${green}11.${plain} Ver registro x-ui 
 ———————————————— 
- ${green}12.${plain} define o x-ui para iniciar automaticamente 
- ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
+ ${green}10.${plain} define o x-ui para iniciar automaticamente 
+ ${green}11.${plain} Cancelar a inicialização automáticado x-ui 
 ———————————————— 
- ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
+ ${green}12.${plain} Instalação com um clique bbr (kernel mais recente) 
  "
     show_status
-    echo && read -p "Por favor, insira uma seleção [0-14]: " num
+    echo && read -p "Por favor, insira uma seleção [0-12]: " num
 
     case "${num}" in
     0)
@@ -552,25 +550,16 @@ show_menu() {
         check_install && restart
         ;;
     10)
-        check_install && status
-        ;;
-    11)
-        check_install && show_log
-        ;;
-    12)
         check_install && enable
         ;;
-    13)
+    11)
         check_install && disable
         ;;
-    14)
+    12)
         install_bbr
         ;;
-    15)
-        ssl_cert_issue
-        ;;
     *)
-        LOGE "请输入正确的数字 [0-14]"
+        LOGE "Por favor, insira uma seleção [0-12]"
         ;;
     esac
 }
