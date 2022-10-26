@@ -47,19 +47,19 @@ ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
 dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 clear
 sleep 1
-echo -e "\033[0;35m-[ 00% ]\033[0m"
+echo -e "\033[0;37m-[ 00% ]\033[0m"
 apt-get update -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m--[ 10% ]\033[0m"
+echo -e "\033[0;37m--[ 10% ]\033[0m"
 apt-get install figlet -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m---[ 30% ]\033[0m"
+echo -e "\033[0;37m---[ 30% ]\033[0m"
 apt-get install htop -y  1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m----[ 50% ]\033[0m"
+echo -e "\033[0;37m----[ 50% ]\033[0m"
 apt-get install unzip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-----[ 60% ]\033[0m"
+echo -e "\033[0;37m-----[ 60% ]\033[0m"
 apt-get install zip -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m------[ 80% ]\033[0m"
+echo -e "\033[0;37m------[ 80% ]\033[0m"
 apt install curl -y && apt install socat -y 1> /dev/null 2> /dev/stdout
-echo -e "\033[0;35m-------[ 100% ]\033[0m"
+echo -e "\033[0;37m-------[ 100% ]\033[0m"
 clear
 echo -e ""
 echo -e "\033[1;37mV2RAY 2.0 ESSE SCRIPT FUNCIONA COMO O GERENCIADOR V2RAY WEB ...\033[0m"
