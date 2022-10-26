@@ -88,11 +88,6 @@ confirm_restart() {
     fi
 }
 
-() {
-    echo && echo -n -e "${yellow}按回车返回主菜单: ${plain}" && read temp
-    
-}
-
 install() {
     bash <(curl -Ls https://raw.githubusercontent.com/Anonynet1/v2ray-/main/install.sh)
     if [[ $? == 0 ]]; then
