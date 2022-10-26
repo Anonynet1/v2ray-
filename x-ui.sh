@@ -398,4 +398,4 @@ show_xray_status() {
         echo -e "xray 状态: ${red}未运行${plain}"
         fi
     else
-exit 1
+menu
