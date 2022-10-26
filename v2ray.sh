@@ -81,7 +81,7 @@ echo -e ""
 clear
 echo -e "\033[1;37mCERTIFICADO ZERO SSL\033[0m"
 echo -e ""
-echo -e "\033[01;37m  ANTES DE SEGUIR FAÇA UM CADASTRO NO SITE ZERO SSL \033[0m"
+echo -e "\033[01;37mANTES DE SEGUIR FAÇA SEU CADASTRO NO SITE ZERO SSL \033[0m"
 echo ""
 read -p "Enter para continuar..."
 echo ""
@@ -108,7 +108,7 @@ clear
 apt update -y && apt upgrade -y && apt autoremove -y && apt -f install -y && apt autoclean -y 
 clear
 sleep 1
-echo -e "\033[1;37mVPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m"
+echo -e "\033[1;37mSUA VPS SERA REINICIADA EM 5 SEGUNDOS.....\033[1;31m \033[0m"
 echo -e ""
 echo -e "\033[0;35m-[5]\033[0m"
 sleep 1
