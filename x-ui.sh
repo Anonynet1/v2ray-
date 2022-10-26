@@ -67,8 +67,8 @@ fi
 
 confirm() {
     if [[ $# > 1 ]]; then
-        echo && read -p "$1 [默认$2]: " temp
-        if [[ x"${temp}" == x"" ]]; then
+        echo && read -p "$1 [y/n]: " temp
+        if [[ x"${temp}" == x"y" ]]; then
             temp=$2
         fi
     else
