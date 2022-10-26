@@ -120,7 +120,6 @@ update() {
     fi
 }
 
-    esac
 else
     show_menu
 fi
