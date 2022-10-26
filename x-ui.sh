@@ -119,7 +119,5 @@ update() {
         exit 0
     fi
 }
-
-else
     show_menu
 fi
