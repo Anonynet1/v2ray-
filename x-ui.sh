@@ -84,7 +84,7 @@ confirm_restart() {
     if [[ $? == 0 ]]; then
         restart
     else
-        
+        return 0
     fi
 }
 
