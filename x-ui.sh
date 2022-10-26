@@ -84,13 +84,13 @@ confirm_restart() {
     if [[ $? == 0 ]]; then
         restart
     else
-        show_show_menu
+        show_menu
     fi
 }
 
-before_show_show_menu() {
+before_show_menu() {
     echo && echo -n -e "${yellow}按回车返回主菜单: ${plain}" && read temp
-    show_show_menu
+    show_menu
 }
 
 install() {
@@ -109,7 +109,7 @@ update() {
     if [[ $? != 0 ]]; then
         LOGE "已取消"
         if [[ $# == 0 ]]; then
-            before_show_show_menu
+            before_show_menu
         fi
         return 0
     fi
@@ -124,7 +124,7 @@ uninstall() {
     confirm "确定要卸载面板吗，xray 也会卸载?" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
-            show_show_menu
+            show_menu
         fi
         return 0
     fi
@@ -141,7 +141,7 @@ uninstall() {
     echo ""
 
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
@@ -149,7 +149,7 @@ reset_user() {
     confirm "确定要将用户名和密码重置为 admin 吗" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
-            show_show_menu
+            show_menu
         fi
         return 0
     fi
@@ -162,7 +162,7 @@ reset_config() {
     confirm "确定要重置所有面板设置吗，账号数据不会丢失，用户名和密码不会改变" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
-            show_show_menu
+            show_menu
         fi
         return 0
     fi
@@ -175,7 +175,7 @@ set_port() {
     echo && echo -n -e "输入端口号[1-65535]: " && read port
     if [[ -z "${port}" ]]; then
         LOGD "已取消"
-        before_show_show_menu
+        before_show_menu
     else
         /usr/local/x-ui/x-ui setting -port ${port}
         echo -e "设置端口完毕，现在请重启面板，并使用新设置的端口 ${green}${port}${plain} 访问面板"
@@ -200,7 +200,7 @@ start() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
@@ -221,7 +221,7 @@ stop() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
@@ -235,14 +235,14 @@ restart() {
         LOGE "面板重启失败，可能是因为启动时间超过了两秒，请稍后查看日志信息"
     fi
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
 status() {
     systemctl status x-ui -l
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
@@ -255,7 +255,7 @@ enable() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
@@ -268,28 +268,28 @@ disable() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
 show_log() {
     journalctl -u x-ui.service -e --no-pager -f
     if [[ $# == 0 ]]; then
-        before_show_show_menu
+        before_show_menu
     fi
 }
 
 migrate_v2_ui() {
     /usr/local/x-ui/x-ui v2-ui
 
-    before_show_show_menu
+    before_show_menu
 }
 
 install_bbr() {
     # temporary workaround for installing bbr
     bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
     echo ""
-    before_show_show_menu
+    before_show_menu
 }
 
 update_shell() {
@@ -297,7 +297,7 @@ update_shell() {
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "下载脚本失败，请检查本机能否连接 Github"
-        before_show_show_menu
+        before_show_menu
     else
         chmod +x /usr/bin/x-ui
         LOGI "升级脚本成功，请重新运行脚本" && exit 0
@@ -332,7 +332,7 @@ check_uninstall() {
         echo ""
         LOGE "面板已安装，请不要重复安装"
         if [[ $# == 0 ]]; then
-            before_show_show_menu
+            before_show_menu
         fi
         return 1
     else
@@ -346,7 +346,7 @@ check_install() {
         echo ""
         LOGE "请先安装面板"
         if [[ $# == 0 ]]; then
-            before_show_show_menu
+            before_show_menu
         fi
         return 1
     else
@@ -397,113 +397,128 @@ show_xray_status() {
     else
         echo -e "xray 状态: ${red}未运行${plain}"
     fi
+}
 
+ssl_cert_issue() {
+    echo -E ""
+    LOGD "******使用说明******"
+    LOGI "该脚本将使用Acme脚本申请证书,使用时需保证:"
+    LOGI "1.知晓Cloudflare 注册邮箱"
+    LOGI "2.知晓Cloudflare Global API Key"
+    LOGI "3.域名已通过Cloudflare进行解析到当前服务器"
+    LOGI "4.该脚本申请证书默认安装路径为/root/cert目录"
+    confirm "我已确认以上内容[y/n]" "y"
+    if [ $? -eq 0 ]; then
+        cd ~
+        LOGI "安装Acme脚本"
+        curl https://get.acme.sh | sh
+        if [ $? -ne 0 ]; then
+            LOGE "安装acme脚本失败"
+            exit 1
+        fi
+        CF_Domain=""
+        CF_GlobalKey=""
+        CF_AccountEmail=""
+        certPath=/root/cert
+        if [ ! -d "$certPath" ]; then
+            mkdir $certPath
+        else
+            rm -rf $certPath
+            mkdir $certPath
+        fi
+        LOGD "请设置域名:"
+        read -p "Input your domain here:" CF_Domain
+        LOGD "你的域名设置为:${CF_Domain}"
+        LOGD "请设置API密钥:"
+        read -p "Input your key here:" CF_GlobalKey
+        LOGD "你的API密钥为:${CF_GlobalKey}"
+        LOGD "请设置注册邮箱:"
+        read -p "Input your email here:" CF_AccountEmail
+        LOGD "你的注册邮箱为:${CF_AccountEmail}"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+        if [ $? -ne 0 ]; then
+            LOGE "修改默认CA为Lets'Encrypt失败,脚本退出"
+            exit 1
+        fi
+        export CF_Key="${CF_GlobalKey}"
+        export CF_Email=${CF_AccountEmail}
+        ~/.acme.sh/acme.sh --issue --dns dns_cf -d ${CF_Domain} -d *.${CF_Domain} --log
+        if [ $? -ne 0 ]; then
+            LOGE "证书签发失败,脚本退出"
+            exit 1
+        else
+            LOGI "证书签发成功,安装中..."
+        fi
+        ~/.acme.sh/acme.sh --installcert -d ${CF_Domain} -d *.${CF_Domain} --ca-file /root/cert/ca.cer \
+            --cert-file /root/cert/${CF_Domain}.cer --key-file /root/cert/${CF_Domain}.key \
+            --fullchain-file /root/cert/fullchain.cer
+        if [ $? -ne 0 ]; then
+            LOGE "证书安装失败,脚本退出"
+            exit 1
+        else
+            LOGI "证书安装成功,开启自动更新..."
+        fi
+        ~/.acme.sh/acme.sh --upgrade --auto-upgrade
+        if [ $? -ne 0 ]; then
+            LOGE "自动更新设置失败,脚本退出"
+            ls -lah cert
+            chmod 755 $certPath
+            exit 1
+        else
+            LOGI "证书已安装且已开启自动更新,具体信息如下"
+            ls -lah cert
+            chmod 755 $certPath
+        fi
     else
-        show_show_menu
+        show_menu
     fi
 }
 
-show_show_menu() {
-  echo -e "\033[0;33m==================================================\033[0m"
-echo -e "\E[44;1;37m               ❖ V2RAY 2.0 ❖                \E[0m"
-echo -e "\033[0;33m==================================================\033[0m"
-mine_port () {
-unset portas
-portas_var=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
-i=0
-while read port; do
-var1=$(echo $port | awk '{print $1}') && var2=$(echo $port | awk '{print $9}' | awk -F ":" '{print $2}')
-[[ "$(echo -e ${portas[@]}|grep "$var1 $var2")" ]] || {
-    portas[$i]="$var1 $var2"
-    let i++
-    }
-done <<< "$portas_var"
-for((i=0; i<=${#portas[@]}; i++)); do
-servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
-porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
-[[ -z $servico ]] && break
-texto="\033[1;37m${servico}: \033[1;37m${porta}"
-     while [[ ${#texto} -lt 35 ]]; do
-        texto=$texto" "
-     done
-echo -ne "${texto}"
-let i++
-servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
-porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
-[[ -z $servico ]] && {
-   echo -e " "
-   break
-   }
-texto="\033[1;37m${servico}: \033[1;37m${porta}"
-     while [[ ${#texto} -lt 35 ]]; do
-        texto=$texto" "
-     done
-echo -ne "${texto}"
-let i++
-servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
-porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
-[[ -z $servico ]] && {
-   echo -e " "
-   break
-   }
-texto="\033[1;37m${servico}: \033[1;37m${porta}"
-     while [[ ${#texto} -lt 35 ]]; do
-        texto=$texto" "
-     done
-echo -e "${texto}"
-done
-echo -e "\033[0;33m==================================================\033[0m"
+show_usage() {
+    echo "x-ui 管理脚本使用方法: "
+    echo "------------------------------------------"
+    echo "x-ui              - 显示管理菜单 (功能更多)"
+    echo "x-ui start        - 启动 x-ui 面板"
+    echo "x-ui stop         - 停止 x-ui 面板"
+    echo "x-ui restart      - 重启 x-ui 面板"
+    echo "x-ui status       - 查看 x-ui 状态"
+    echo "x-ui enable       - 设置 x-ui 开机自启"
+    echo "x-ui disable      - 取消 x-ui 开机自启"
+    echo "x-ui log          - 查看 x-ui 日志"
+    echo "x-ui v2-ui        - 迁移本机器的 v2-ui 账号数据至 x-ui"
+    echo "x-ui update       - 更新 x-ui 面板"
+    echo "x-ui install      - 安装 x-ui 面板"
+    echo "x-ui uninstall    - 卸载 x-ui 面板"
+    echo "------------------------------------------"
 }
-mine_port
 
-if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
-system=$(cut -d' ' -f1 /etc/issue.net)
-system+=$(echo ' ')
-system+=$(cut -d' ' -f2 /etc/issue.net |awk -F "." '{print $1}')
-elif [[ "$(grep -c "Debian" /etc/issue.net)" = "1" ]]; then
-system=$(cut -d' ' -f1 /etc/issue.net)
-system+=$(echo ' ')
-system+=$(cut -d' ' -f3 /etc/issue.net)
-else
-system=$(cut -d' ' -f1 /etc/issue.net)
-fi
-_ons=$(ps -x | grep sshd | grep -v root | grep priv | wc -l)
-_ram=$(printf ' %-9s' "$(free -h | grep -i mem | awk {'print $2'})")
-_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
-_usop=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
-_core=$(printf '%-1s' "$(grep -c cpu[0-9] /proc/stat)")
-_system=$(printf '%-14s' "$system")
-_hora=$(printf '%(%H:%M:%S)T')
-_tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
-echo -e "\033[1;37mSISTEMA            MEMÓRIA RAM      PROCESSADOR "
-echo -e "\033[1;38mOS: \033[1;37m$_system \033[1;37mTotal:\033[1;37m$_ram \033[1;37mNucleos: \033[1;37m$_core\033[0m"
-echo -e "\033[1;37mHora: \033[1;37m$_hora     \033[1;37mEm uso: \033[1;37m$_usor \033[1;37mEm uso: \033[1;37m$_usop\033[0m"
-echo -e "\033[0;33m==================================================\033[0m"
-  echo -e "
-  ${green}script de gerenciamento de painel v2ray 2.0${plain} script de saída 
-  ${green}0.${plain} 
-  ———————————————— 
-  ${green}1.${plain} instalar x-ui 
-  ${green}2.${plain} atualizar x-ui 
-  ${green}3.${plain} desinstalar x-ui
-  ———————————————— 
- ${green}4.${plain} redefinir nome de usuário e senha 
- ${green}5.${plain} redefinir as configurações do painel 
- ${green}6.${plain} definir porta do painel 
-———————————————— 
-  ${green}7.${plain} iniciar x-ui 
-  ${green}8.${plain} parar x-ui 
-  ${green}9.${plain} reinicie o x-ui 
-  ${green}10.${plain} Ver status x-ui 
-  ${green}11.${plain} Ver registro x-ui 
-———————————————— 
-  ${green}12.${plain} define o x-ui para iniciar automaticamente 
-  ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
-  ———————————————— 
-  ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
+show_menu() {
+    echo -e "
+  ${green}x-ui 面板管理脚本${plain}
+  ${green}0.${plain} 退出脚本
+————————————————
+  ${green}1.${plain} 安装 x-ui
+  ${green}2.${plain} 更新 x-ui
+  ${green}3.${plain} 卸载 x-ui
+————————————————
+  ${green}4.${plain} 重置用户名密码
+  ${green}5.${plain} 重置面板设置
+  ${green}6.${plain} 设置面板端口
+————————————————
+  ${green}7.${plain} 启动 x-ui
+  ${green}8.${plain} 停止 x-ui
+  ${green}9.${plain} 重启 x-ui
+ ${green}10.${plain} 查看 x-ui 状态
+ ${green}11.${plain} 查看 x-ui 日志
+————————————————
+ ${green}12.${plain} 设置 x-ui 开机自启
+ ${green}13.${plain} 取消 x-ui 开机自启
+————————————————
+ ${green}14.${plain} 一键安装 bbr (最新内核)
+ ${green}15.${plain} 一键申请SSL证书(acme申请)
  "
     show_status
-    echo && read -p "Por favor, insira uma seleção [0-14]: " num
+    echo && read -p "请输入选择 [0-14]: " num
 
     case "${num}" in
     0)
@@ -551,11 +566,52 @@ echo -e "\033[0;33m==================================================\033[0m"
     14)
         install_bbr
         ;;
-   
+    15)
+        ssl_cert_issue
+        ;;
     *)
-        LOGE "Por favor, insira uma seleção [0-14]"
+        LOGE "请输入正确的数字 [0-14]"
         ;;
     esac
+}
+
+if [[ $# > 0 ]]; then
+    case $1 in
+    "start")
+        check_install 0 && start 0
+        ;;
+    "stop")
+        check_install 0 && stop 0
+        ;;
+    "restart")
+        check_install 0 && restart 0
+        ;;
+    "status")
+        check_install 0 && status 0
+        ;;
+    "enable")
+        check_install 0 && enable 0
+        ;;
+    "disable")
+        check_install 0 && disable 0
+        ;;
+    "log")
+        check_install 0 && show_log 0
+        ;;
+    "v2-ui")
+        check_install 0 && migrate_v2_ui 0
+        ;;
+    "update")
+        check_install 0 && update 0
+        ;;
+    "install")
+        check_uninstall 0 && install 0
+        ;;
+    "uninstall")
+        check_install 0 && uninstall 0
+        ;;
+    *) show_usage ;;
+    esac
 else
-    show_show_menu
+    show_menu
 fi
