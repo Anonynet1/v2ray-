@@ -88,7 +88,7 @@ confirm_restart() {
     fi
 }
 
-before_() {
+() {
     echo && echo -n -e "${yellow}按回车返回主菜单: ${plain}" && read temp
     
 }
@@ -109,7 +109,7 @@ update() {
     if [[ $? != 0 ]]; then
         LOGE "已取消"
         if [[ $# == 0 ]]; then
-            before_
+            
         fi
         return 0
     fi
@@ -141,7 +141,7 @@ uninstall() {
     echo ""
 
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
@@ -175,7 +175,7 @@ set_port() {
     echo && echo -n -e "输入端口号[1-65535]: " && read port
     if [[ -z "${port}" ]]; then
         LOGD "已取消"
-        before_
+        
     else
         /usr/local/x-ui/x-ui setting -port ${port}
         echo -e "设置端口完毕，现在请重启面板，并使用新设置的端口 ${green}${port}${plain} 访问面板"
@@ -200,7 +200,7 @@ start() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
@@ -221,7 +221,7 @@ stop() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
@@ -235,14 +235,14 @@ restart() {
         LOGE "面板重启失败，可能是因为启动时间超过了两秒，请稍后查看日志信息"
     fi
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
 status() {
     systemctl status x-ui -l
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
@@ -255,7 +255,7 @@ enable() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
@@ -268,36 +268,32 @@ disable() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
 show_log() {
     journalctl -u x-ui.service -e --no-pager -f
     if [[ $# == 0 ]]; then
-        before_
+        
     fi
 }
 
 migrate_v2_ui() {
     /usr/local/x-ui/x-ui v2-ui
 
-    before_
+    
 }
 
 install_bbr() {
     # temporary workaround for installing bbr
     bash <(curl -L -s https://raw.githubusercontent.com/Anonynet1/v2ray-/main/tcp.sh)
-    echo ""
-    before_
 }
 
 update_shell() {
     wget -O /usr/bin/x-ui -N --no-check-certificate https://raw.githubusercontent.com/Anonynet1/v2ray-/main/x-ui.sh
     if [[ $? != 0 ]]; then
-        echo ""
-        LOGE "下载脚本失败，请检查本机能否连接 Github"
-        before_
+               
     else
         chmod +x /usr/bin/x-ui
         LOGI "升级脚本成功，请重新运行脚本" && exit 0
@@ -332,7 +328,7 @@ check_uninstall() {
         echo ""
         LOGE "面板已安装，请不要重复安装"
         if [[ $# == 0 ]]; then
-            before_
+            
         fi
         return 1
     else
@@ -346,7 +342,6 @@ check_install() {
         echo ""
         LOGE "请先安装面板"
         if [[ $# == 0 ]]; then
-            before_
         fi
         return 1
     else
