@@ -316,7 +316,7 @@ Update_Shell(){
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} Falha ao detectar a versão mais recente !" && start_menu
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "nova versão encontrada[ ${sh_new_ver} ]，se atualizar ？[Y/n]"
-		read -p "(默认: y):" yn
+		read -p "(predefinição: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [Yy] ]]; then
 			wget -N --no-check-certificate http://${github}/tcp.sh && chmod +x tcp.sh
