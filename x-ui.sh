@@ -84,13 +84,13 @@ confirm_restart() {
     if [[ $? == 0 ]]; then
         restart
     else
-        show_menu
+        show_show_menu
     fi
 }
 
-before_show_menu() {
+before_show_show_menu() {
     echo && echo -n -e "${yellow}按回车返回主菜单: ${plain}" && read temp
-    show_menu
+    show_show_menu
 }
 
 install() {
@@ -109,7 +109,7 @@ update() {
     if [[ $? != 0 ]]; then
         LOGE "已取消"
         if [[ $# == 0 ]]; then
-            before_show_menu
+            before_show_show_menu
         fi
         return 0
     fi
@@ -124,7 +124,7 @@ uninstall() {
     confirm "确定要卸载面板吗，xray 也会卸载?" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
-            show_menu
+            show_show_menu
         fi
         return 0
     fi
@@ -141,7 +141,7 @@ uninstall() {
     echo ""
 
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
@@ -149,7 +149,7 @@ reset_user() {
     confirm "确定要将用户名和密码重置为 admin 吗" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
-            show_menu
+            show_show_menu
         fi
         return 0
     fi
@@ -162,7 +162,7 @@ reset_config() {
     confirm "确定要重置所有面板设置吗，账号数据不会丢失，用户名和密码不会改变" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
-            show_menu
+            show_show_menu
         fi
         return 0
     fi
@@ -175,7 +175,7 @@ set_port() {
     echo && echo -n -e "输入端口号[1-65535]: " && read port
     if [[ -z "${port}" ]]; then
         LOGD "已取消"
-        before_show_menu
+        before_show_show_menu
     else
         /usr/local/x-ui/x-ui setting -port ${port}
         echo -e "设置端口完毕，现在请重启面板，并使用新设置的端口 ${green}${port}${plain} 访问面板"
@@ -200,7 +200,7 @@ start() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
@@ -221,7 +221,7 @@ stop() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
@@ -235,14 +235,14 @@ restart() {
         LOGE "面板重启失败，可能是因为启动时间超过了两秒，请稍后查看日志信息"
     fi
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
 status() {
     systemctl status x-ui -l
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
@@ -255,7 +255,7 @@ enable() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
@@ -268,28 +268,28 @@ disable() {
     fi
 
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
 show_log() {
     journalctl -u x-ui.service -e --no-pager -f
     if [[ $# == 0 ]]; then
-        before_show_menu
+        before_show_show_menu
     fi
 }
 
 migrate_v2_ui() {
     /usr/local/x-ui/x-ui v2-ui
 
-    before_show_menu
+    before_show_show_menu
 }
 
 install_bbr() {
     # temporary workaround for installing bbr
     bash <(curl -L -s https://raw.githubusercontent.com/teddysun/across/master/bbr.sh)
     echo ""
-    before_show_menu
+    before_show_show_menu
 }
 
 update_shell() {
@@ -297,7 +297,7 @@ update_shell() {
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "下载脚本失败，请检查本机能否连接 Github"
-        before_show_menu
+        before_show_show_menu
     else
         chmod +x /usr/bin/x-ui
         LOGI "升级脚本成功，请重新运行脚本" && exit 0
@@ -332,7 +332,7 @@ check_uninstall() {
         echo ""
         LOGE "面板已安装，请不要重复安装"
         if [[ $# == 0 ]]; then
-            before_show_menu
+            before_show_show_menu
         fi
         return 1
     else
@@ -346,7 +346,7 @@ check_install() {
         echo ""
         LOGE "请先安装面板"
         if [[ $# == 0 ]]; then
-            before_show_menu
+            before_show_show_menu
         fi
         return 1
     else
@@ -396,6 +396,166 @@ show_xray_status() {
         echo -e "xray 状态: ${green}运行${plain}"
     else
         echo -e "xray 状态: ${red}未运行${plain}"
-        fi
+    fi
+
     else
-menu
+        show_show_menu
+    fi
+}
+
+show_show_menu() {
+  echo -e "\033[0;33m==================================================\033[0m"
+echo -e "\E[44;1;37m               ❖ V2RAY 2.0 ❖                \E[0m"
+echo -e "\033[0;33m==================================================\033[0m"
+mine_port () {
+unset portas
+portas_var=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
+i=0
+while read port; do
+var1=$(echo $port | awk '{print $1}') && var2=$(echo $port | awk '{print $9}' | awk -F ":" '{print $2}')
+[[ "$(echo -e ${portas[@]}|grep "$var1 $var2")" ]] || {
+    portas[$i]="$var1 $var2"
+    let i++
+    }
+done <<< "$portas_var"
+for((i=0; i<=${#portas[@]}; i++)); do
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && break
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -ne "${texto}"
+let i++
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && {
+   echo -e " "
+   break
+   }
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -ne "${texto}"
+let i++
+servico="$(echo ${portas[$i]}|cut -d' ' -f1)"
+porta="$(echo ${portas[$i]}|cut -d' ' -f2)"
+[[ -z $servico ]] && {
+   echo -e " "
+   break
+   }
+texto="\033[1;37m${servico}: \033[1;37m${porta}"
+     while [[ ${#texto} -lt 35 ]]; do
+        texto=$texto" "
+     done
+echo -e "${texto}"
+done
+echo -e "\033[0;33m==================================================\033[0m"
+}
+mine_port
+
+if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
+system=$(cut -d' ' -f1 /etc/issue.net)
+system+=$(echo ' ')
+system+=$(cut -d' ' -f2 /etc/issue.net |awk -F "." '{print $1}')
+elif [[ "$(grep -c "Debian" /etc/issue.net)" = "1" ]]; then
+system=$(cut -d' ' -f1 /etc/issue.net)
+system+=$(echo ' ')
+system+=$(cut -d' ' -f3 /etc/issue.net)
+else
+system=$(cut -d' ' -f1 /etc/issue.net)
+fi
+_ons=$(ps -x | grep sshd | grep -v root | grep priv | wc -l)
+_ram=$(printf ' %-9s' "$(free -h | grep -i mem | awk {'print $2'})")
+_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
+_usop=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
+_core=$(printf '%-1s' "$(grep -c cpu[0-9] /proc/stat)")
+_system=$(printf '%-14s' "$system")
+_hora=$(printf '%(%H:%M:%S)T')
+_tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
+echo -e "\033[1;37mSISTEMA            MEMÓRIA RAM      PROCESSADOR "
+echo -e "\033[1;38mOS: \033[1;37m$_system \033[1;37mTotal:\033[1;37m$_ram \033[1;37mNucleos: \033[1;37m$_core\033[0m"
+echo -e "\033[1;37mHora: \033[1;37m$_hora     \033[1;37mEm uso: \033[1;37m$_usor \033[1;37mEm uso: \033[1;37m$_usop\033[0m"
+echo -e "\033[0;33m==================================================\033[0m"
+  echo -e "
+  ${green}script de gerenciamento de painel v2ray 2.0${plain} script de saída 
+  ${green}0.${plain} 
+  ———————————————— 
+  ${green}1.${plain} instalar x-ui 
+  ${green}2.${plain} atualizar x-ui 
+  ${green}3.${plain} desinstalar x-ui
+  ———————————————— 
+ ${green}4.${plain} redefinir nome de usuário e senha 
+ ${green}5.${plain} redefinir as configurações do painel 
+ ${green}6.${plain} definir porta do painel 
+———————————————— 
+  ${green}7.${plain} iniciar x-ui 
+  ${green}8.${plain} parar x-ui 
+  ${green}9.${plain} reinicie o x-ui 
+  ${green}10.${plain} Ver status x-ui 
+  ${green}11.${plain} Ver registro x-ui 
+———————————————— 
+  ${green}12.${plain} define o x-ui para iniciar automaticamente 
+  ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
+  ———————————————— 
+  ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
+ "
+    show_status
+    echo && read -p "Por favor, insira uma seleção [0-14]: " num
+
+    case "${num}" in
+    0)
+        exit 0
+        ;;
+    1)
+        check_uninstall && install
+        ;;
+    2)
+        check_install && update
+        ;;
+    3)
+        check_install && uninstall
+        ;;
+    4)
+        check_install && reset_user
+        ;;
+    5)
+        check_install && reset_config
+        ;;
+    6)
+        check_install && set_port
+        ;;
+    7)
+        check_install && start
+        ;;
+    8)
+        check_install && stop
+        ;;
+    9)
+        check_install && restart
+        ;;
+    10)
+        check_install && status
+        ;;
+    11)
+        check_install && show_log
+        ;;
+    12)
+        check_install && enable
+        ;;
+    13)
+        check_install && disable
+        ;;
+    14)
+        install_bbr
+        ;;
+   
+    *)
+        LOGE "Por favor, insira uma seleção [0-14]"
+        ;;
+    esac
+else
+    show_show_menu
+fi
