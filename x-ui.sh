@@ -494,31 +494,30 @@ show_usage() {
 
 show_menu() {
     echo -e "
-  ${green}x-ui 面板管理脚本${plain}
-  ${green}0.${plain} 退出脚本
-————————————————
-  ${green}1.${plain} 安装 x-ui
-  ${green}2.${plain} 更新 x-ui
-  ${green}3.${plain} 卸载 x-ui
-————————————————
-  ${green}4.${plain} 重置用户名密码
-  ${green}5.${plain} 重置面板设置
-  ${green}6.${plain} 设置面板端口
-————————————————
-  ${green}7.${plain} 启动 x-ui
-  ${green}8.${plain} 停止 x-ui
-  ${green}9.${plain} 重启 x-ui
- ${green}10.${plain} 查看 x-ui 状态
- ${green}11.${plain} 查看 x-ui 日志
-————————————————
- ${green}12.${plain} 设置 x-ui 开机自启
- ${green}13.${plain} 取消 x-ui 开机自启
-————————————————
- ${green}14.${plain} 一键安装 bbr (最新内核)
- ${green}15.${plain} 一键申请SSL证书(acme申请)
+  ${green}script do painel${plain} 
+  ${green}0.${plain} saír
+  ———————————————— 
+  ${green}1.${plain} instalar x-ui 
+  ${green}2.${plain} atualizar x-ui 
+  ${green}3.${plain} desinstalar x-ui
+  ———————————————— 
+ ${green}4.${plain} redefinir nome de usuário e senha 
+ ${green}5.${plain} redefinir as configurações do painel 
+ ${green}6.${plain} definir porta do painel 
+———————————————— 
+  ${green}7.${plain} iniciar x-ui 
+  ${green}8.${plain} parar x-ui 
+  ${green}9.${plain} reinicie o x-ui 
+  ${green}10.${plain} Ver status x-ui 
+  ${green}11.${plain} Ver registro x-ui 
+———————————————— 
+  ${green}12.${plain} define o x-ui para iniciar automaticamente 
+  ${green}13.${plain} Cancelar a inicialização automáticado x-ui 
+  ———————————————— 
+  ${green}14.${plain} Instalação com um clique bbr (kernel mais recente) 
  "
     show_status
-    echo && read -p "请输入选择 [0-14]: " num
+    echo && read -p "Por favor, insira uma seleção [0-14]: " num
 
     case "${num}" in
     0)
