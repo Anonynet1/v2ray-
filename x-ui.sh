@@ -85,7 +85,6 @@ confirm_restart() {
         restart
     else
         
-    fi
 }
 
 before_() {
