@@ -355,9 +355,9 @@ echo && echo -e " Script de gerenciamento de instalação com um clique de acele
 
 	check_status
 	if [[ ${kernel_status} == "noinstall" ]]; then
-		echo -e " Estado atual: ${Green_font_prefix}Não instalado${Font_color_suffix}kernel acelerado${Red_font_prefix}Por favor instale o kernel primeiro${Font_color_suffix}"
+		echo -e " Estado atual: ${Green_font_prefix} Não instalado${Font_color_suffix} kernel acelerado${Red_font_prefix} Por favor instale o kernel primeiro${Font_color_suffix}"
 	else
-		echo -e " Estado atual: ${Green_font_prefix}Instalado${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} kernel acelerado , ${Green_font_prefix}${run_status}${Font_color_suffix}"
+		echo -e " Estado atual: ${Green_font_prefix} Instalado${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} kernel acelerado , ${Green_font_prefix}${run_status}${Font_color_suffix}"
 		
 	fi
 echo
